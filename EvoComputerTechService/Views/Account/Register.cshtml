@@ -1,0 +1,77 @@
+﻿@model RegisterViewModel
+
+@{
+    ViewBag.Title = "Kayıt Ol";
+}
+
+
+<div class="body_wrapper">
+    <section class="sign_in_area bg_color sec_pad">
+        <div class="container">
+            <div class="sign_info">
+                <div class="row">
+                    <div>
+                        <div class="login_info">
+                            <h2 class="f_p f_600 f_size_24 t_color3 mb_40">KAYIT OL</h2>
+                            <form method="post" asp-controller="Account" asp-action="Register" class="login-form sign-in-form">
+                                <div class="form-group text_box">
+                                    <label asp-for="UserName"></label>
+                                    <input asp-for="UserName" placeholder="Username" />
+                                    <span asp-validation-for="UserName" class="text-danger"></span>
+                                </div>
+                                <div class="form-group text_box">
+                                    <label asp-for="Email"></label>
+                                    <input asp-for="Email" placeholder="Email"/>
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                                <div class="form-group text_box">
+                                    <label asp-for="Name"></label>
+                                    <input asp-for="Name" placeholder="Name"/>
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                                <div class="form-group text_box">
+                                    <label asp-for="Surname"></label>
+                                    <input asp-for="Surname" placeholder="Surname"/>
+                                    <span asp-validation-for="Surname" class="text-danger"></span>
+                                </div>
+                                <div class="form-group text_box">
+                                    <label asp-for="Password"></label>
+                                    <input asp-for="Password" placeholder="Password"/>
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+                                <div class="form-group text_box">
+                                    <label asp-for="ConfirmPassword"></label>
+                                    <input asp-for="ConfirmPassword" placeholder="ConfirmPassword"/>
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                </div>
+                                <div class="extra mb_20">
+                                    @*<div class="checkbox remember">
+                                            <label>
+                                                <input type="checkbox"> I agree to terms and conditions of this website
+                                            </label>
+                                        </div>*@
+                                    <!--//check-box-->
+                                    <div class="forgotten-password">
+                                        <a href="#">Şifreni Mi Unuttun?</a>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <button type="submit" class="btn_three">Kayıt Ol</button>
+                                    @*<div class="social_text d-flex ">
+                                            <div class="lead-text">  Or Sign up Using</div>
+                                            <ul class="list-unstyled social_tag mb-0">
+                                                <li><a href="#"><i class="ti-facebook"></i></a></li>
+                                                <li><a href="#"><i class="ti-twitter-alt"></i></a></li>
+                                                <li><a href="#"><i class="ti-google"></i></a></li>
+                                            </ul>
+                                        </div>*@
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+S

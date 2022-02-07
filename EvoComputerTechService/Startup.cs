@@ -1,8 +1,11 @@
 using EvoComputerTechService.Data;
+using EvoComputerTechService.MapperProfiles;
 using EvoComputerTechService.Models.Identity;
+using EvoComputerTechService.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,6 +38,8 @@ namespace EvoComputerTechService
             {
                 options.Password.RequireDigit = true;
                 options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
                 options.Password.RequiredLength = 5;
 
                 options.Lockout.MaxFailedAccessAttempts = 3;
@@ -44,7 +49,7 @@ namespace EvoComputerTechService
                 options.User.RequireUniqueEmail = true;
                 options.User.AllowedUserNameCharacters =
                     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-            }).AddEntityFrameworkStores<MyContext>();
+            }).AddEntityFrameworkStores<MyContext>().AddDefaultTokenProviders();
 
             services.ConfigureApplicationCookie(options =>
             {
@@ -55,6 +60,13 @@ namespace EvoComputerTechService
                 options.AccessDeniedPath = "/Account/AccessDenied";
                 options.SlidingExpiration = true;
             });
+
+            services.AddAutoMapper(options =>
+            {
+                options.AddProfile(typeof(AccountProfile));
+            });
+
+            services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddControllersWithViews();
         }
@@ -77,6 +89,7 @@ namespace EvoComputerTechService
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
