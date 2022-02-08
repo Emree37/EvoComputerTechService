@@ -1,7 +1,42 @@
 ﻿@model UserProfileViewModel
 
 @{
-    ViewBag.Title = $"{Model.Name} {Model.Surname} Profil Sayfası";
+    ViewBag.Title = $"{Model.Name} {Model.Surname} Profil Page";
 }
 
-@*PROFİL GÜNCELLEME SAYFASI*@
+<div class="body_wrapper">
+    <section class="sign_in_area bg_color sec_pad">
+        <div class="container">
+            <div class="sign_info">
+                <div class="row">
+                    <div>
+                        <div class="login_info">
+                            <h2 class="f_p f_600 f_size_24 t_color3 mb_40">KAYIT OL</h2>
+                            <form method="post" asp-controller="Account" asp-action="Profile" class="login-form sign-in-form">
+                                <div class="form-group text_box">
+                                    <label asp-for="Name"></label>
+                                    <input asp-for="Name" placeholder="Email"/>
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                                <div class="form-group text_box">
+                                    <label asp-for="Surname"></label>
+                                    <input asp-for="Surname" placeholder="Name"/>
+                                    <span asp-validation-for="Surname" class="text-danger"></span>
+                                </div>
+                                <div class="form-group text_box">
+                                    <label asp-for="Email"></label>
+                                    <input asp-for="Email" placeholder="Surname"/>
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                               
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <button type="submit" class="btn_three">Guncelle</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
