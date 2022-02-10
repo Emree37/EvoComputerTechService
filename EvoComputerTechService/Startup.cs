@@ -1,4 +1,5 @@
 using EvoComputerTechService.Data;
+using EvoComputerTechService.Extensions;
 using EvoComputerTechService.MapperProfiles;
 using EvoComputerTechService.Models.Identity;
 using EvoComputerTechService.Services;
@@ -54,21 +55,16 @@ namespace EvoComputerTechService
             services.ConfigureApplicationCookie(options =>
             {
                 // Cookie settings
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
 
                 options.LoginPath = "/Account/Login";
                 options.AccessDeniedPath = "/Account/AccessDenied";
                 options.SlidingExpiration = true;
             });
 
-            services.AddAutoMapper(options =>
-            {
-                options.AddProfile(typeof(AccountProfile));
-            });
+            services.AddApplicationServices(this.Configuration);
 
-            services.AddTransient<IEmailSender, EmailSender>();
-
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
