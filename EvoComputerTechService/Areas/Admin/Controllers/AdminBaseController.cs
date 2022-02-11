@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EvoComputerTechService.Areas.Admin.Controllers
+namespace it_service_app.Areas.Admin.Controllers
 {
     [Authorize(Roles ="Admin")]
     public class AdminBaseController : Controller
     {
-      
+       
     }
 }
