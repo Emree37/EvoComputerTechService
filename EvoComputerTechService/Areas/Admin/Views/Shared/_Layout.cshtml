@@ -1,66 +1,110 @@
 ﻿<!DOCTYPE html>
-<html lang="tr">
-
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <title>@ViewBag.Title - Admin</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
-    <meta content="" name="author" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
-    <!-- App favicon -->
-    <link rel="shortcut icon" href="~/admin-assets/images/favicon.ico">
-    <link rel="stylesheet" href="~/admin-assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/admin-assets/css/jquery-ui.min.css" />
-    <link rel="stylesheet" href="~/admin-assets/css/icons.min.css" />
-    <link rel="stylesheet" href="~/admin-assets/css/metisMenu.min.css" />
-    <link rel="stylesheet" href="~/admin-assets/css/app.min.css" />
-    <link rel="stylesheet" href="~/vendor/devextreme/dist/css/dx.light.css" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <title>Blank Page | Equation - Multipurpose Bootstrap Dashboard Template </title>
+    <link rel="icon" type="image/x-icon" href="~/admin-assets/assets/img/favicon.ico"/>
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+    <link href="~/admin-assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/admin-assets/assets/css/plugins.css" rel="stylesheet" type="text/css" />
     @await RenderSectionAsync("Styles",required:false)
+    <!-- END GLOBAL MANDATORY STYLES -->
+    
+    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+
+    <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+    
 </head>
+<body class="default-sidebar">
 
-<body>
-    <!-- leftbar-tab-menu -->
-    <partial name="Partials/_leftbar-tab-menu" />
-    <!-- end leftbar-tab-menu-->
-    <!-- Top Bar Start -->
-    <partial name="Partials/_top-bar" />
-    <!-- Top Bar End -->
+    <!-- Tab Mobile View Header -->
+     <partial name="Partials/_tab-mobile-view" />
+    <!-- Tab Mobile View Header -->
 
-    <div class="page-wrapper">
-        <!-- Page Content-->
-        <div class="page-content-tab">
-            <!-- main container -->
-            <div class="container-fluid">
-                @RenderBody()
+    <!--  BEGIN NAVBAR  -->
+     <partial name="Partials/_navbar" />
+   
+    <!--  END NAVBAR  -->
+
+     <!--  BEGIN MAIN CONTAINER  -->
+    <div class="main-container" id="container">
+
+        <div class="overlay"></div>
+        <div class="cs-overlay"></div>
+        
+
+        <!--  BEGIN SIDEBAR  -->
+
+     <partial name="Partials/_begin-main" />
+
+       
+        <!--  END SIDEBAR  -->
+        
+        <!--  BEGIN CONTENT PART  -->
+        <div id="content" class="main-content">
+            <div class="container">
+                <div class="page-header">
+                    <div class="page-title">
+                        <h3>Blank Page</h3>
+                        <div class="crumbs">
+                            <ul id="breadcrumbs" class="breadcrumb">
+                                <li><a href="index.html"><i class="flaticon-home-fill"></i></a></li>
+                                <li><a href="#">Pages</a></li>
+                                <li class="active"><a href="#">Blank Page</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- CONTENT AREA -->
+                
+
+                    @RenderBody()
+
+
+                <!-- CONTENT AREA -->
+
             </div>
-            <!-- end container -->
-            <!-- right bar -->
-            <partial name="Partials/_right-bar" />
-            <!-- end right bar -->
-            <!--footer-->
-            <partial name="Partials/_footer" />
-            <!--end footer-->
         </div>
-        <!-- end page content -->
+        <!--  END CONTENT PART  -->
     </div>
-    <!-- end page-wrapper -->
-    <script src="~/admin-assets/js/jquery.min.js"></script>
-    <script src="~/admin-assets/js/jquery-ui.min.js"></script>
-    <script src="~/admin-assets/js/bootstrap.bundle.min.js"></script>
-    <script src="~/admin-assets/js/metismenu.min.js"></script>
-    <script src="~/admin-assets/js/waves.js"></script>
-    <script src="~/admin-assets/js/feather.min.js"></script>
-    <script src="~/admin-assets/js/jquery.slimscroll.min.js"></script>
-    <script src="~/admin-assets/plugins/apexcharts/apexcharts.min.js"></script>
-    <script src="~/admin-assets/js/app.js"></script>
-    <script type="text/javascript" src="~/vendor/exceljs/dist/exceljs.min.js"></script>
-    <script type="text/javascript" src="~/vendor/file-saver/dist/fileSaver.min.js"></script>
-    <script type="text/javascript" src="~/vendor/jszip/dist/jszip.min.js"></script>
-    <script type="text/javascript" src="~/vendor/jquery/dist/jquery.min.js"></script>
-    <script type="text/javascript" src="~/vendor/devextreme/dist/js/dx.all.js"></script>
+    <!-- END MAIN CONTAINER -->
+       
+     
+    <!--  BEGIN FOOTER  -->
+     <partial name="Partials/_footer" />
+    
+    <!--  END FOOTER  -->
+
+    <!--  BEGIN CONTROL SIDEBAR  -->
+     <partial name="Partials/_begin-sidebar"/>
+      
+    <!--  END CONTROL SIDEBAR  -->
+
+    <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
+    <script src="~/admin-assets/assets/js/libs/jquery-3.1.1.min.js"></script>
+    <script src="~/admin-assets/bootstrap/js/popper.min.js"></script>
+    <script src="~/admin-assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/admin-assets/plugins/scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="~/admin-assets/assets/js/app.js"></script>
+    <script>
+        $(document).ready(function() {
+            App.init();
+        });
+    </script>
+    <script src="~/admin-assets/assets/js/custom.js"></script>
 
     @await RenderSectionAsync("Scripts",required:false)
+    
+    <!-- END GLOBAL MANDATORY SCRIPTS -->
+
+    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
+
+    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
 </body>
 </html>
+
