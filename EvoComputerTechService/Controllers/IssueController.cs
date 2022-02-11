@@ -77,15 +77,50 @@ namespace EvoComputerTechService.Controllers
         }
 
         [HttpGet]
-        public IActionResult UpdateIssue()
+        public IActionResult UpdateIssue(Guid id)
         {
-            return View();
+            var issue = _dbContext.Issues.Find(id);
+            if(issue == null)
+            {
+
+            }
+
+            return View(issue);
         }
 
         [HttpPost]
-        public IActionResult UpdateIssue(Issue model)
+        public IActionResult UpdateIssue(string lat, string lng, Issue model)
         {
-            return View();
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            Issue issue = _dbContext.Issues.Find(model.Id);
+            issue.IssueName = model.IssueName;
+            issue.Description = model.Description;
+            issue.AddressDetail = model.AddressDetail;
+            issue.UpdatedDate = DateTime.Now;
+            issue.Latitude = lat;
+            issue.Longitude = lng;
+
+            _dbContext.SaveChanges();
+            return RedirectToAction("GetIssues");
+        }
+
+        
+        public IActionResult DeleteIssue(Guid id)
+        {
+            var issue = _dbContext.Issues.Find(id);
+            if (issue == null)
+            {
+
+            }
+
+            _dbContext.Remove(issue);
+            _dbContext.SaveChanges();
+
+            return RedirectToAction("GetIssues");
         }
     }
 }
