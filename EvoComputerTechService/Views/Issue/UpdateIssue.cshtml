@@ -1,0 +1,71 @@
+﻿<section class="mapbox2">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="map"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Styles {
+    <style>
+        #map {
+            height: 450px;
+            width: 100%;
+            position: absolute;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA74z7LZzTqKlJPcwjA2XlzNEYhBInY9SA&callback=initMap&v=weekly"
+            async></script>
+    <script>
+        var map = null;
+        var marker = null;
+        function addMarker(position) {
+            const marker = new google.maps.Marker({
+                position,
+                map,
+            });
+        }
+        function initMap() {
+            console.log("Harita Yüklendi.");
+            const myLatlng = { lat: 41.0441, lng: 29.0067 };
+            map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 16,
+                center: myLatlng,
+                mapTypeId: "terrain"
+            });
+            marker = new google.maps.Marker({
+                position: myLatlng,
+                map: map,
+            });
+            map.addListener("click", (mapsMouseEvent) => {
+                console.log("Tıklandı");
+                console.log(mapsMouseEvent);
+                if (marker == null) {
+                    marker = new google.maps.Marker({
+                        position: mapsMouseEvent.latLng,
+                        map: map
+                    });
+                    marker.getTitle(JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2))
+                }
+                else {
+                    marker.setMap(null);
+                    marker = new google.maps.Marker({
+                        position: mapsMouseEvent.latLng,
+                        map: map,
+                    });
+                }
+                document.getElementById("lat").value = mapsMouseEvent.latLng.lat();
+                document.getElementById("lng").value = mapsMouseEvent.latLng.lng();
+                console.log("Enlem: " + mapsMouseEvent.latLng.lat());
+                console.log("Boylam: " + mapsMouseEvent.latLng.lng());
+                marker.getTitle(JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2))
+            });
+        }
+    </script>
+
+}

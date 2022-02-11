@@ -23,6 +23,8 @@
     <link rel="stylesheet" href="~/css/style.css">
     <link rel="stylesheet" href="~/css/responsive.css">
 
+    @await RenderSectionAsync("Styles", required: false)
+
 </head>
 
 <body>
@@ -81,6 +83,9 @@
     <script src="~/vendors/red-countdown/red-countdown-settings.js"></script>
     <script src="~/js/plugins.js"></script>
     <script src="~/js/main.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 
 </html>
