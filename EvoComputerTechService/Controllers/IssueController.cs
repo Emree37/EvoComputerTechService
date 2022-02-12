@@ -28,10 +28,10 @@ namespace EvoComputerTechService.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetIssues()
+        public async Task<IActionResult> GetIssues()
         {
-            var issues = _dbContext.Issues.ToList();
-
+            var user = await _userManager.FindByIdAsync(HttpContext.GetUserId());
+            var issues = _dbContext.Issues.Where(x=>x.UserId == user.Id).ToList();
             return View(issues);
         }
 

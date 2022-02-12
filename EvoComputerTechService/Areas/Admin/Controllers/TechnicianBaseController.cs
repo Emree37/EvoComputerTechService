@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace EvoComputerTechService.Areas.Admin.Controllers
 {
-    [Authorize(Roles = "Admin")]
-    public class AdminBaseController : Controller
+    [Authorize(Roles = "Technician")]
+    public class TechnicianBaseController : Controller
     {
 
     }

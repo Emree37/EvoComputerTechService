@@ -8,7 +8,7 @@ namespace EvoComputerTechService.ViewModels
 {
     public class ResetPasswordViewModel
     {
-        [Required(ErrorMessage = "Eski Şifre alanı gereklidir.")]
+        [Required(ErrorMessage = "Yeni Şifre alanı gereklidir.")]
         [StringLength(100, MinimumLength = 6, ErrorMessage = "Şifreniz minimum 6 karaterli olmalıdır!")]
         [Display(Name = "Yeni Şifre")]
         [DataType(DataType.Password)]

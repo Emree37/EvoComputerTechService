@@ -98,7 +98,11 @@ namespace EvoComputerTechService
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapAreaControllerRoute("default", "admin", "admin/{controller=Manage}/{action=Index}/{id?}");
+                endpoints.MapAreaControllerRoute("default", "admin", "admin/{controller=Admin}/{action=Index}/{id?}");
+
+                endpoints.MapAreaControllerRoute("default", "operator", "operator/{controller=Operator}/{action=Index}/{id?}");
+
+                endpoints.MapAreaControllerRoute("default", "technician", "technician/{controller=Technician}/{action=Index}/{id?}");
 
                 endpoints.MapControllerRoute(
                     name: "default",
