@@ -85,12 +85,12 @@ namespace EvoComputerTechService
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseStaticFiles(new StaticFileOptions()   // enables static files serving for the given request path
+            app.UseStaticFiles(new StaticFileOptions()
             {
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"node_modules")),
                 RequestPath = new PathString("/vendor")
-
             });
+
             app.UseRouting();
 
             app.UseAuthentication();

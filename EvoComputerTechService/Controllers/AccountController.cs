@@ -189,7 +189,7 @@ namespace EvoComputerTechService.Controllers
                 //    Subject = $"Merhaba {HttpContext.User.Identity.Name}"
                 //});
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home", new { area = "" });
             }
             else
             {
