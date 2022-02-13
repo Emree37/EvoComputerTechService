@@ -18,6 +18,8 @@ namespace EvoComputerTechService.Models.Identity
 
         public DateTime CreatedDate { get; set; } = DateTime.Now;
 
+        public bool IsDeleted { get; set; } = false;
+
         public virtual List<Issue> Issues { get; set; }
     }
 }

@@ -61,17 +61,19 @@
                 dataSource: DevExpress.data.AspNet.createStore({
                     key: 'id',
                     loadUrl: `${url}/getusers`,
-                    updateUrl: `${url}/updateusers`
+                    updateUrl: `${url}/updateusers`,
+                    deleteUrl: `${url}/deleteuser`
                     //insertUrl: `${url}/InsertOrder`,
 
-                    //deleteUrl: `${url}/DeleteOrder`,
                     //onBeforeSend(method, ajaxOptions) {
                     //    ajaxOptions.xhrFields = { withCredentials: true };
                     //}
                 }),
                 editing: {
                     mode: 'form',
-                    allowUpdating: true
+                    allowUpdating: true,
+                    allowDeleting: true,
+                    allowAdding: true
                 },
                 showColumnLines: true,
                 allowColumnResizing: true,

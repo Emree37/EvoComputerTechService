@@ -141,11 +141,11 @@
                     }
                      @if (Context.User.IsInRole(RoleNames.Operator))
                      {
-                        <a class="event_btn btn_hover" asp-area="Operator" asp-controller="Operator" asp-action="Index">OPERATOR PANEL</a>
+                        <a class="event_btn btn_hover" asp-area="Admin" asp-controller="Operator" asp-action="Index">OPERATOR PANEL</a>
                      }
                     @if (Context.User.IsInRole(RoleNames.Technician))
                     {
-                        <a class="event_btn btn_hover" asp-area="Technician" asp-controller="Technician" asp-action="Index">TEKNİSYEN PANEL</a> 
+                        <a class="event_btn btn_hover" asp-area="Admin" asp-controller="Technician" asp-action="Index">TEKNİSYEN PANEL</a> 
                      }
                 }
                 else
