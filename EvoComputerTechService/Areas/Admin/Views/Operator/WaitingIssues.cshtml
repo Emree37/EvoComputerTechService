@@ -1,5 +1,9 @@
 ﻿@model List<Issue>
 
+@{ 
+    ViewBag.Title = "Bekleyen Arızalar";
+}
+
 <section class="blog_area sec_pad">
     <div class="container">
         <div class="row" id="blog_masonry">
@@ -15,13 +19,20 @@
                                 <a href="#">@item.IssueState</a>
                                 <a href="#">@item.CreatedDate</a>
                             </div>
-                            <a asp-area="Admin" asp-controller="Operator" asp-action="IssueDetail" asp-route-id="@item.Id">
+                            <a asp-controller="Issue" asp-action="UpdateIssue" asp-route-id="@item.Id">
                                 <h5 class="f_p f_size_20 f_500 t_color mb_20">@item.IssueName</h5>
                             </a>
                             <p class="f_400 mb-0">
                                 @item.Description
                             </p>
                             <br />
+                            <div>
+                                <button class="btn btn-danger">
+                                    <a asp-area="Admin" asp-controller="Operator" asp-action="AssignTechnician" asp-route-id="@item.Id">
+                                        TEKNİSYEN ATA
+                                    </a>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

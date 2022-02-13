@@ -18,5 +18,10 @@ namespace EvoComputerTechService.Data
         }
 
         public DbSet<Issue> Issues { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);  
+        }
     }
 }

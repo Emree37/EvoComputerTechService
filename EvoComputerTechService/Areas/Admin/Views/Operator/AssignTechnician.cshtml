@@ -1,0 +1,112 @@
+﻿<form asp-area="Admin" asp-controller="Operator" asp-action="AssignTechnician" method="post">
+    <div class="form-group">
+        <label>DropdownList Multiple Select</label>
+        <label id="employees">
+            <span style="padding-right: 10px">Hepsini Seç / Temizle </span>
+            <input type="checkbox" id="hepsiniSec"><i></i>
+        </label>
+        <select name="Technician[]"
+                id="select2"
+                multiple="multiple"
+                class="form-control"
+                asp-items="ViewBag.Technicians"></select>
+    </div>
+    <div class="form-group">
+        <button class="btn btn-primary">Ata</button>
+    </div>
+</form>
+
+
+@Html.DropDownList("Technicians")
+
+<br />
+<br />
+<br />
+
+@Html.DropDownList("Technicians", new SelectList(ViewBag.Technicians, "Value", "Text"), "Teknisyen Seçiniz", new { @class = "form-control" })
+
+<br />
+<br />
+<br />
+
+@Html.DropDownList("Technicians", null, "Teknisyen Seçiniz", new { @class = "form-control" })
+
+
+@section Styles
+{
+    <style>
+        #employees {
+            padding: 0 20px
+        }
+
+            #employees:last-child {
+                border-bottom: 1px solid #BBB;
+            }
+
+            #employees > input {
+                display: none;
+            }
+
+            #employees i {
+                display: inline-block;
+                float: right;
+                padding: 2px;
+                width: 40px;
+                height: 20px;
+                border-radius: 13px;
+                vertical-align: middle;
+                -webkit-transition: .25s .09s;
+                transition: .25s .09s;
+                position: relative;
+                background: #d8d9db;
+                box-sizing: initial;
+            }
+
+                #employees i:after {
+                    content: " ";
+                    display: block;
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                    background: #fff;
+                    position: absolute;
+                    left: 2px;
+                    -webkit-transition: .25s;
+                    transition: .25s;
+                }
+
+            #employees > input:checked + i {
+                background: #4bd865;
+            }
+
+                #employees > input:checked + i:after {
+                    -webkit-transform: translateX(20px);
+                    transform: translateX(20px);
+                }
+
+            #employees:hover {
+                cursor: pointer;
+            }
+    </style>
+}
+
+@section Scripts
+{
+    <script>
+        $(function () {
+            //select2 eklentimizin tanımı
+            $('#select2').select2();
+            //hepsiniSec kodlarımız
+            $("#hepsiniSec").on("click", function () {
+                if ($(this).is(':checked')) {
+                    $("#select2 > option").prop("selected", "selected");
+                    $("#select2").trigger("change");
+                }
+                else {
+                    $("#select2 > option").removeAttr("selected");
+                    $("#select2").trigger("change");
+                }
+            });
+        });
+    </script>
+}

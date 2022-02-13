@@ -1,0 +1,42 @@
+﻿@model List<Issue>
+
+@{
+    ViewBag.Title = "İşlemde Olan Arızalar";
+}
+
+<section class="blog_area sec_pad">
+    <div class="container">
+        <div class="row" id="blog_masonry">
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-4 col-sm-6">
+                    <div class="blog_grid_item mb-30">
+                        @*<div class="blog_img">
+                                <img src="~/img/blog-grid/masonry_02.jpg" alt="">
+                            </div>*@
+                        <div class="blog_content">
+                            <div class="entry_post_info">
+                                <a href="#">@item.IssueState</a>
+                                <a href="#">@item.CreatedDate</a>
+                            </div>
+                            <a asp-controller="Issue" asp-action="UpdateIssue" asp-route-id="@item.Id">
+                                <h5 class="f_p f_size_20 f_500 t_color mb_20">@item.IssueName</h5>
+                            </a>
+                            <p class="f_400 mb-0">
+                                @item.Description
+                            </p>
+                            <br />
+                            <div>
+                                <button class="btn btn-danger">
+                                    <a asp-controller="Issue" asp-action="DeleteIssue" asp-route-id="@item.Id">
+                                        SİL
+                                    </a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

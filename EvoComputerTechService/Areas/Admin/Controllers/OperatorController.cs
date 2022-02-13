@@ -1,7 +1,11 @@
 ﻿using EvoComputerTechService.Data;
+using EvoComputerTechService.Extensions;
+using EvoComputerTechService.Models.Entities;
 using EvoComputerTechService.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,23 +30,81 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult AllIssues()
+        public IActionResult WaitingIssues()
         {
-            var allIssues = _dbContext.Issues.ToList();
+            var waitingIssues = _dbContext.Issues.Where(x=>x.IssueState == IssueStates.Beklemede).ToList();
 
-            return View(allIssues);
+            return View(waitingIssues);
         }
 
         [HttpGet]
-        public IActionResult IssueDetail(Guid id)
+        public IActionResult ActiveIssues()
         {
-            var issue = _dbContext.Issues.Find(id);
-            if (issue == null)
-            {
+            var activeIssues = _dbContext.Issues.Where(x => x.IssueState == IssueStates.Islemde).ToList();
 
-            }
-
-            return View(issue);
+            return View(activeIssues);
         }
+
+        [HttpGet]
+        public IActionResult AssignedIssues()
+        {
+            var assignedIssues = _dbContext.Issues.Where(x => x.IssueState == IssueStates.Atandi).ToList();
+
+            return View(assignedIssues);
+        }
+
+        [HttpGet]
+        public IActionResult CompletedIssues()
+        {
+            var completedIssues = _dbContext.Issues.Where(x => x.IssueState == IssueStates.Tamamlandi).ToList();
+
+            return View(completedIssues);
+        }
+
+        [HttpGet]
+        public IActionResult AssignTechnician(Guid id)
+        {
+            var Technicians = new List<SelectListItem>();
+
+            var x = _userManager.GetUsersInRoleAsync("Technician").Result;
+            var users = x.OfType<ApplicationUser>();
+
+            foreach (var item in users)
+            {
+                Technicians.Add(new SelectListItem
+                {
+                    Text = $"{item.Name} {item.Surname}",
+                    Value = item.Id.ToString()
+                });
+            }
+            ViewBag.Technicians = Technicians;
+            
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AssignTechnician(string[] Technician)
+        {
+            
+
+
+            return View();
+        }
+
+
+
+
+        //[HttpGet]
+        //public IActionResult IssueDetail(Guid id)
+        //{
+        //    var issue = _dbContext.Issues.Find(id);
+        //    if (issue == null)
+        //    {
+
+        //    }
+
+        //    return View(issue);
+        //}
     }
 }

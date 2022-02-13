@@ -23,10 +23,16 @@ namespace EvoComputerTechService.Models.Entities
         public IssueStates IssueState { get; set; }
 
         [StringLength(450)]
+        public string TechnicianId { get; set; }
+
+        [StringLength(450)]
         public string UserId { get; set; }
 
         [ForeignKey(nameof(UserId))]
         public virtual ApplicationUser User { get; set; }
+
+        [ForeignKey(nameof(TechnicianId))]
+        public virtual ApplicationUser Technician { get; set; }
     }
 
     public enum IssueStates
