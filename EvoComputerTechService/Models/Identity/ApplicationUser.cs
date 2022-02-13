@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,6 +21,10 @@ namespace EvoComputerTechService.Models.Identity
 
         public bool IsDeleted { get; set; } = false;
 
-        public virtual List<Issue> Issues { get; set; }
+        [InverseProperty("User")]
+        public virtual List<Issue> IssuesUser { get; set; }
+
+        [InverseProperty("Technician")]
+        public virtual List<Issue> IssuesTechnician { get; set; }
     }
 }

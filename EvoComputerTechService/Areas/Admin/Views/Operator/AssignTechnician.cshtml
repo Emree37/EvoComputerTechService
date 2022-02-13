@@ -1,4 +1,7 @@
-﻿<form asp-area="Admin" asp-controller="Operator" asp-action="AssignTechnician" method="post">
+﻿@model Issue
+
+<form asp-area="Admin" asp-controller="Operator" asp-action="AssignTechnician" method="post">
+    <input type="hidden" id="id" name="id" value="@Model.Id"/>
     <div class="form-group">
         <label>DropdownList Multiple Select</label>
         <label id="employees">
@@ -15,21 +18,6 @@
         <button class="btn btn-primary">Ata</button>
     </div>
 </form>
-
-
-@Html.DropDownList("Technicians")
-
-<br />
-<br />
-<br />
-
-@Html.DropDownList("Technicians", new SelectList(ViewBag.Technicians, "Value", "Text"), "Teknisyen Seçiniz", new { @class = "form-control" })
-
-<br />
-<br />
-<br />
-
-@Html.DropDownList("Technicians", null, "Teknisyen Seçiniz", new { @class = "form-control" })
 
 
 @section Styles
@@ -92,7 +80,9 @@
 
 @section Scripts
 {
+    
     <script>
+        @*document.getElementById("id").value = @Model.Id;*@
         $(function () {
             //select2 eklentimizin tanımı
             $('#select2').select2();
