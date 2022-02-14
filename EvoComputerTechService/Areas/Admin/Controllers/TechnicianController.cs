@@ -1,5 +1,6 @@
 ﻿using EvoComputerTechService.Data;
 using EvoComputerTechService.Extensions;
+using EvoComputerTechService.Models.Entities;
 using EvoComputerTechService.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -35,5 +36,34 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
             return View(myIssues);
         }
 
+        
+        public IActionResult AcceptIssue(Guid id)
+        {
+            var issue = _dbContext.Issues.Find(id);
+            issue.IssueState = IssueStates.Islemde;
+            _dbContext.SaveChanges();
+
+            return RedirectToAction("AcceptedIssues");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AcceptedIssues()
+        {
+            var user = await _userManager.FindByIdAsync(HttpContext.GetUserId());
+
+            var acceptedIssues = _dbContext.Issues.Where(x => x.TechnicianId == user.Id &&
+                x.IssueState == IssueStates.Islemde)
+                .ToList();
+
+            return View(acceptedIssues);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> IssueDetail()
+        {
+            
+
+            return View();
+        }
     }
 }
