@@ -98,15 +98,10 @@
     <script src="~/admin-assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="~/admin-assets/plugins/scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="~/admin-assets/assets/js/app.js"></script>
-    <script>
-        $(document).ready(function () {
-            App.init();
-        });
-    </script>
-    <script src="~/admin-assets/assets/js/custom.js"></script>
+    @*<script src="~/admin-assets/assets/js/custom.js"></script>*@
 
 
-    <script src="~/js/jquery-3.6.0.min.js"></script>
+ @*   <script src="~/js/jquery-3.6.0.min.js"></script>
     <script src="~/js/propper.js"></script>
     <script src="~/js/bootstrap.min.js"></script>
     <script src="~/vendors/wow/wow.min.js"></script>
@@ -128,8 +123,17 @@
     <script src="~/vendors/red-countdown/redcountdown.js"></script>
     <script src="~/vendors/red-countdown/red-countdown-settings.js"></script>
     <script src="~/js/plugins.js"></script>
-    <script src="~/js/main.js"></script>
+    <script src="~/js/main.js"></script>*@
 
+
+    <script>
+        $(document).ready(function() {
+            App.init();
+        });
+    </script>
+
+   
+   <script src="~/admin-assets/assets/js/custom.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 
