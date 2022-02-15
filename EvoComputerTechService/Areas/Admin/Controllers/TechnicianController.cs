@@ -63,6 +63,8 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
         {
             var issue = _dbContext.Issues.Find(id);
 
+            
+
             return View();
         }
     }

@@ -21,6 +21,8 @@ namespace EvoComputerTechService.Data
 
         public DbSet<Product> Products { get; set; }
 
+        public DbSet<IssueProducts> IssueProducts { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -28,6 +30,10 @@ namespace EvoComputerTechService.Data
             builder.Entity<Product>()
                 .Property(x => x.Price)
                 .HasPrecision(8, 2);
+
+            builder.Entity<IssueProducts>()
+                .HasKey(x => new { x.IssueId, x.ProductId }); //Composite Key
+            
         }
     }
 }

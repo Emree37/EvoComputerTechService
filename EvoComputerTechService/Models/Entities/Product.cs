@@ -15,10 +15,6 @@ namespace EvoComputerTechService.Models.Entities
 
         public decimal Price { get; set; }
 
-        [StringLength(450)]
-        public Guid IssueId { get; set; } = Guid.NewGuid();
-
-        [ForeignKey(nameof(IssueId))]
-        public virtual Issue Issue { get; set; }
+        public virtual List<IssueProducts> IssueProducts { get; set; }
     }
 }
