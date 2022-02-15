@@ -33,6 +33,8 @@ namespace EvoComputerTechService.Models.Entities
 
         [ForeignKey(nameof(TechnicianId))]
         public virtual ApplicationUser Technician { get; set; }
+
+        public virtual List<Product> Products { get; set; }
     }
 
     public enum IssueStates
