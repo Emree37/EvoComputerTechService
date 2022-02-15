@@ -31,7 +31,7 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
         {
             var user = await _userManager.FindByIdAsync(HttpContext.GetUserId());
 
-            var myIssues = _dbContext.Issues.Where(x => x.TechnicianId == user.Id).ToList();
+            var myIssues = _dbContext.Issues.Where(x => x.TechnicianId == user.Id && x.IssueState == IssueStates.Atandi).ToList();
 
             return View(myIssues);
         }
@@ -59,9 +59,9 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> IssueDetail()
+        public IActionResult IssueDetail(Guid id)
         {
-            
+            var issue = _dbContext.Issues.Find(id);
 
             return View();
         }
