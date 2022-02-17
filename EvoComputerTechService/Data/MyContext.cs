@@ -39,5 +39,6 @@ namespace EvoComputerTechService.Data
                 .HasKey(x => new { x.IssueId, x.ProductId }); //Composite Key
             
         }
+
     }
 }
