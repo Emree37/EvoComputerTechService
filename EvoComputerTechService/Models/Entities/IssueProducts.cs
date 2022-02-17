@@ -8,9 +8,9 @@ namespace EvoComputerTechService.Models.Entities
 {
     public class IssueProducts
     {
-        public Guid IssueId { get; set; } = Guid.NewGuid();
+        public Guid IssueId { get; set; } 
 
-        public Guid ProductId { get; set; } = Guid.NewGuid();
+        public Guid ProductId { get; set; } 
 
         public decimal Price { get; set; }
 
