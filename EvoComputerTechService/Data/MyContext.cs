@@ -35,9 +35,11 @@ namespace EvoComputerTechService.Data
                 .Property(x => x.Price)
                 .HasPrecision(8, 2);
 
+
             builder.Entity<IssueProducts>()
                 .HasKey(x => new { x.IssueId, x.ProductId }); //Composite Key
             
+
         }
 
     }
