@@ -38,6 +38,8 @@ namespace EvoComputerTechService.Data
             builder.Entity<IssueProducts>()
                 .HasKey(x => new { x.IssueId, x.ProductId }); //Composite Key
             
+
+
         }
 
     }
