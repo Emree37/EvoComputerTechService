@@ -63,9 +63,9 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
         {
             var issue = _dbContext.Issues.Find(id);
 
-            
+            var products = _dbContext.Products.ToList();
 
-            return View();
+            return View(products);
         }
     }
 }
