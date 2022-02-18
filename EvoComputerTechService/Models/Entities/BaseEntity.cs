@@ -10,7 +10,7 @@ namespace EvoComputerTechService.Models.Entities
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
         [StringLength(128)]
         public string CreatedUser { get; set; }
         public DateTime? UpdatedDate { get; set; }

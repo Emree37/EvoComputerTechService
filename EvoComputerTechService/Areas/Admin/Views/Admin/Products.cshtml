@@ -1,0 +1,151 @@
+﻿@{
+    ViewBag.Title = "Ürün Listesi";
+}
+<div class="container-fluid">
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="float-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="#">Metrica</a>
+                        </li><!--end nav-item-->
+                        <li class="breadcrumb-item">
+                            <a href="#">CRM</a>
+                        </li><!--end nav-item-->
+                        <li class="breadcrumb-item active">Products</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">Products</h4>
+            </div><!--end page-title-box-->
+        </div><!--end col-->
+    </div>
+    <!-- end page title end breadcrumb -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h4 class="card-title">Ürün Detayları</h4>
+                        </div><!--end col-->
+                    </div>  <!--end row-->
+                </div><!--end card-header-->
+                <div class="card-body">
+                    <div id="dxGrid"></div>
+                </div><!--end card-body-->
+            </div><!--end card-->
+        </div> <!--end col-->
+    </div><!--end row-->
+
+</div>
+
+@section Styles
+{
+    <link rel="stylesheet" href="~/vendor/devextreme/dist/css/dx.light.css">
+}
+
+@section Scripts
+{
+    <script type="text/javascript" src="~/vendor/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="~/vendor/devextreme/dist/js/dx.all.js"></script>
+    <script src="~/vendor/devextreme-aspnet-data/js/dx.aspnet.data.js"></script>
+    <script>
+    var dataGrid = null;
+    $(() => {
+        var url = '../../../api/productapi';
+        function loadGrid() {
+            dataGrid = $('#dxGrid').dxDataGrid({
+                remoteOperations: { paging: true, filtering: true, sorting: true, grouping: true, summary: true, groupPaging: true },
+                dataSource: DevExpress.data.AspNet.createStore({
+                    key: 'id',
+                    loadUrl: `${url}/getproducts`,
+                    updateUrl: `${url}/updateproducts`,
+                    deleteUrl: `${url}/deleteproduct`,
+                    insertUrl: `${url}/insertproduct`
+
+                    //onBeforeSend(method, ajaxOptions) {
+                    //    ajaxOptions.xhrFields = { withCredentials: true };
+                    //}
+                }),
+                editing: {
+                    mode: 'form',
+                    allowUpdating: true,
+                    allowDeleting: true,
+                    allowAdding: true
+                },
+                showColumnLines: true,
+                allowColumnResizing: true,
+                showRowLines: true,
+                rowAlternationEnabled: true,
+                showBorders: true,
+                searchPanel: {
+                    visible: true,
+                    width: 240,
+                    placeholder: "Ara..."
+                },
+                filterRow: {
+                    visible: true,
+                    applyFilter: "auto"
+                },
+                headerFilter: {
+                    visible: true
+                },
+                export: {
+                    enabled: true,
+                    fileName: `Tüm Ürünler_${parseInt(Math.random() * 1000000000)}`,
+                    allowExportSelectedData: true
+                },
+                paging: {
+                    pageSize: 20
+                },
+                pager: {
+                    showPageSizeSelector: true,
+                    allowedPageSizes: [5, 15, 30, 45],
+                    showInfo: true
+                },
+                selection: {
+                    mode: "multiple"
+                },
+                columns: [
+                    {
+                        caption: 'Id',
+                        dataField: "id",
+                        visible: false,
+                        allowFiltering: false,
+                        formItem: { visible: false }
+                    },
+                    {
+                        caption: 'Ürün Adı',
+                        dataField: "productName"
+                    },
+                    {
+                        caption: 'Ürün Açıklaması',
+                        dataField: "productDescription"
+                    },
+                    {
+                        caption: 'Fiyatı',
+                        dataField: "price"
+                    },
+                    {
+                        caption: 'Ürün Detayı',
+                        cellTemplate: function(container, options) {
+                            var current = options.data;
+                            var url = '@Url.Action("ProductDetail","Admin")' + '/' + current.id;
+                            $("<a href=" + url + "/>")
+                                .text("Ürün Detayı")
+                                .addClass('btn btn-block btn-info btn-sm')
+                                .appendTo(container);
+                        },
+                        formItem: { visible: false }
+                    }
+                ]
+            }).dxDataGrid("instance");
+        }
+        loadGrid();
+    });
+    </script>
+}
+
+
