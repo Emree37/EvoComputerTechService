@@ -1,39 +1,51 @@
 ﻿@model List<Product>
 
-<div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 layout-spacing">
-    <div class="statbox widget box box-shadow">
-        <div class="widget-content widget-content-area px-0 py-0 product-cat10">
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="card">
-                        <div class="wrapper">
-                            <div class="card-content-container text-center">
-                                <div class="content">
-                                    <button class="btn btn-default mb-3">Add To Cart</button>
-                                    <h5 class="card-pricing">$299</h5>
-                                    <h1 class="title"><a href="#">Wooden Table</a></h1>
-                                    <p class="card-text">
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                        tempor incididunt ut labore et dolore magna aliqua.
-                                    </p>
-                                    <div class="row">
-                                        <div class="col-sm-6 col-6">
-                                            <p class="wishlist float-right">
-                                                <i class="flaticon-heart-1"></i>
-                                            </p>
-                                        </div>
-                                        <div class="col-sm-6 col-6">
-                                            <p class="zoom float-left">
-                                                <i class="flaticon-attachment"></i>
-                                            </p>
+<div class="col-md-12">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-3 layout-spacing">
+                <div class="statbox widget box box-shadow">
+                    <div class="widget-content widget-content-area px-0 py-0 product-cat10">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="wrapper">
+                                        <div class="card-content-container text-center">
+                                            <div class="content">
+                                                <button class="btn btn-default mb-3">ÜRÜNÜ EKLE</button>
+                                                <h5 class="card-pricing">@item.Price</h5>
+                                                <h1 class="title"><a href="#">@item.ProductName</a></h1>
+                                                <p class="card-text">
+                                                    @item.ProductDescription
+                                                </p>
+                                                <div class="row">
+                                                    <div class="col-sm-6 col-6">
+                                                        <p class="wishlist float-right">
+                                                            <i class="flaticon-heart-1"></i>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-sm-6 col-6">
+                                                        <p class="zoom float-left">
+                                                            <i class="flaticon-attachment"></i>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
+
                     </div>
                 </div>
             </div>
-        </div>
+        }
     </div>
+   
 </div>
+
+
+
