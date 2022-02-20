@@ -23,8 +23,23 @@
                             </p>
                             <br />
                             <div>
-                                <button class="btn btn-danger"><a asp-controller="Issue" asp-action="DeleteIssue" asp-route-id="@item.Id">SİL
-                                </a></button>
+                                @if (item.IssueState != IssueStates.Tamamlandi)
+                                {
+                                    <button class="btn btn-danger">
+                                        <a asp-controller="Issue" asp-action="DeleteIssue" asp-route-id="@item.Id">
+                                            SİL
+                                        </a>
+                                    </button>
+                                }
+
+                                @if (item.IssueState == IssueStates.Tamamlandi)
+                                {
+                                    <button class="btn btn-danger">
+                                        <a asp-controller="Issue" asp-action="DeleteIssue" asp-route-id="@item.Id">
+                                            ÖDE
+                                        </a>
+                                    </button>
+                                }
                             </div>
                         </div>
                     </div>

@@ -1,8 +1,9 @@
-﻿@model List<Product>
+﻿@model IssueDetailViewModel
+
 
 <div class="col-md-12">
     <div class="row">
-        @foreach (var item in Model)
+        @foreach (var item in Model.Products)
         {
             <div class="col-md-3 layout-spacing">
                 <div class="statbox widget box box-shadow">
@@ -13,7 +14,7 @@
                                     <div class="wrapper">
                                         <div class="card-content-container text-center">
                                             <div class="content">
-                                                <button class="btn btn-default mb-3">ÜRÜNÜ EKLE</button>
+                                                <a asp-area="Admin" asp-action="AddProduct" asp-controller="Technician" asp-route-id="@item.Id" class="btn btn-default mb-3">ÜRÜNÜ EKLE</a>
                                                 <h5 class="card-pricing">@item.Price</h5>
                                                 <h1 class="title"><a href="#">@item.ProductName</a></h1>
                                                 <p class="card-text">
@@ -44,8 +45,97 @@
             </div>
         }
     </div>
-   
 </div>
+
+
+<div class="main-container" id="container">
+    <div class="overlay"></div>
+    <div class="cs-overlay"></div>
+    <div id="content" class="main-content">
+        <div class="container">
+
+            <div class="row" id="cancel-row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="statbox widget box box-shadow">
+                        <div class="widget-header">
+                            <div class="row">
+                                <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                    <h4>İŞLEMLER</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="widget-content widget-content-area view-cart-content">
+                            <div class="container">
+                                <div class="row mb-5">
+                                    <div class="col-md-12">
+                                        <form method="post">
+                                            <div class="table-responsive">
+                                                <table class="table view-cart-table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="col-thumbnail">ÜRÜN</th>
+                                                            <th class="col-title"></th>
+                                                            <th class="col-price">FİYAT</th>
+                                                            <th class="col-quantity">ADET</th>
+                                                            <th class="col-subtotal">TOPLAM FİYAT</th>
+                                                            <th class="col-remove"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var item in Model.IssueProducts)
+                                                        {
+                                                            <tr>
+                                                                <td><a href="#"><img class="product-thumbnail img-fluid" src="assets/img/320x320.jpg" alt=""></a></td>
+                                                                <td>
+                                                                    <h6 class="mb-0"><a href="#">@item.Product.ProductName</a></h6>
+                                                                </td>
+                                                                <td>@item.Product.Price</td>
+                                                                <td>
+                                                                    <input class="form-control" type="number" step="1" min="1" value="@item.Quantity">
+                                                                </td>
+                                                                <td>@item.Price</td>
+                                                                <td class="cart-remove text-center"><a asp-area="Admin" asp-controller="Technician" asp-action="DeleteProduct" asp-route-id="@item.ProductId"><i class="flaticon-close-fill"></i></a></td>
+                                                            </tr>
+                                                        }
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table cart-table">
+                                            <tbody>
+                                                <tr>
+                                                    <td>Subtotal</td>
+                                                    <td class="text-right">$21.00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Discount</td>
+                                                    <td class="text-right">$1.00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Total</td>
+                                                    <td class="text-right">$20.00</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="text-right"><a class="btn btn-primary btn-rounded mt-4 mb-3" asp-controller="Technician" asp-action="CompleteIssue">TAMAMLA</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
 
 
