@@ -35,7 +35,7 @@
                                 @if (item.IssueState == IssueStates.Tamamlandi)
                                 {
                                     <button class="btn btn-danger">
-                                        <a asp-controller="Issue" asp-action="DeleteIssue" asp-route-id="@item.Id">
+                                        <a asp-controller="Payment" asp-action="Pay" asp-route-id="@item.Id">
                                             ÖDE
                                         </a>
                                     </button>
