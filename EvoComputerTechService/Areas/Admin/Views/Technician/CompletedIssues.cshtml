@@ -4,32 +4,34 @@
     ViewBag.Title = "Tamamlanan Arızalar";
 }
 
-<section class="blog_area sec_pad">
-    <div class="container">
-        <div class="row" id="blog_masonry">
-            @foreach (var item in Model)
-            {
-                <div class="col-lg-4 col-sm-6">
-                    <div class="blog_grid_item mb-30">
-                        @*<div class="blog_img">
-                                <img src="~/img/blog-grid/masonry_02.jpg" alt="">
-                            </div>*@
-                        <div class="blog_content">
-                            <div class="entry_post_info">
-                                <a href="#">@item.IssueState</a>
-                                <a href="#">@item.CreatedDate</a>
+<div class="col-md-12">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-xl-3 col-lg-6 col-md-6 col-12 product-cat6">
+                <div class="card mb-5">
+                    <div class="wrapper">
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <span class="badge badge-success">@item.IssueState</span>
+                                <img alt="image-product" src="~/admin-assets/assets/img/500x400.jpg" class="img-fluid">
                             </div>
-                            <a asp-controller="Issue" asp-action="UpdateIssue" asp-route-id="@item.Id">
-                                <h5 class="f_p f_size_20 f_500 t_color mb_20">@item.IssueName</h5>
-                            </a>
-                            <p class="f_400 mb-0">
-                                @item.Description
-                            </p>
-                            <br />
+                            <div class="col-xl-12 text-center">
+                                <h4 class="card-title">@item.IssueName</h4>
+
+                                <p class="card-text">@item.Description</p>
+                            </div>
+                            <div class="col-xl-12 text-center mt-2 card-bottom-section">
+                                <button class="btn btn-success">
+                                    <a asp-area="Admin" asp-controller="Technician" asp-action="IssueDetail" asp-route-id="@item.Id">
+                                        DETAY
+                                    </a>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            }
-        </div>
+            </div>
+        }
     </div>
-</section>
+</div>
