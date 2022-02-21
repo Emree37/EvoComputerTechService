@@ -210,13 +210,7 @@ namespace EvoComputerTechService.Controllers
         {
             var user = await _userManager.FindByIdAsync(HttpContext.GetUserId());
 
-            //var model = new UserProfileViewModel()
-            //{
-            //    Email = user.Email,
-            //    Name = user.Name,
-            //    Surname = user.Surname
-            //};
-
+            //ApplicationUser - UserProfileViewModel otamatik eşleme(map)
             var model = _mapper.Map<UserProfileViewModel>(user);
 
             return View(model);
@@ -225,7 +219,6 @@ namespace EvoComputerTechService.Controllers
         [HttpPost]
         public async Task<IActionResult> Profile(UserProfileViewModel model)
         {
-            //var userModel = _mapper.Map<ApplicationUser>(model);
 
             if (!ModelState.IsValid)
             {

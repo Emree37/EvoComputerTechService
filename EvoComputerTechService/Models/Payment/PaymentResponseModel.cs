@@ -12,7 +12,7 @@ namespace EvoComputerTechService.Models.Payment
         public int? Installment { get; set; }
         public string Currency { get; set; }
         public string PaymentId { get; set; }
-        public string PaymentStatus { get; set; }
+        public string Status { get; set; }
         public int? FraudStatus { get; set; }
         public string MerchantCommissionRate { get; set; }
         public string MerchantCommissionRateAmount { get; set; }

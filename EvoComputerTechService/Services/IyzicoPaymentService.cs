@@ -19,13 +19,16 @@ namespace EvoComputerTechService.Services
         private readonly IConfiguration _configuration;
         private readonly IyzicoPaymentOptions _options;
         private readonly IMapper _mapper;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager; //Buyer için...
         public IyzicoPaymentService(IConfiguration configuration, IMapper mapper, UserManager<ApplicationUser> userManager)
         {
             _configuration = configuration;
             _mapper = mapper;
             _userManager = userManager;
+            
             var section = _configuration.GetSection(IyzicoPaymentOptions.Key);
+            //IyzicoOptionsKey inin alıyor GetSection()Apsetting jsondaki optionsları getiriyor
+
             _options = new IyzicoPaymentOptions()
             {
                 ApiKey = section["ApiKey"],
@@ -48,53 +51,21 @@ namespace EvoComputerTechService.Services
                 BasketId = StringHelpers.GenerateUniqueCode(),
                 PaymentChannel = PaymentChannel.WEB.ToString(),
                 PaymentGroup = PaymentGroup.SUBSCRIPTION.ToString(),
-                PaymentCard = _mapper.Map<PaymentCard>(model.CardModel)
-        };
-
-            
-
-            var user = _userManager.FindByIdAsync(model.UserId).Result;
-
-            var buyer = new Buyer
-            {
-                Id = user.Id,
-                Name = user.Name,
-                Surname = user.Surname,
-                GsmNumber = user.PhoneNumber,
-                Email = user.Email,
-                IdentityNumber = "11111111110",
-                LastLoginDate = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss}",
-                RegistrationDate = $"{user.CreatedDate:yyyy-MM-dd HH:mm:ss}",
-                RegistrationAddress = "Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1",
-                Ip = model.Ip,
-                City = "Istanbul",
-                Country = "Turkey",
-                ZipCode = "34732"
+                PaymentCard = _mapper.Map<PaymentCard>(model.CardModel),
+                Buyer = _mapper.Map<Buyer>(model.Customer),
+                BillingAddress = _mapper.Map<Address>(model.Address)
             };
-            paymentRequest.Buyer = buyer;
 
-            var billingAddress = new Address
-            {
-                ContactName = $"{user.Name} {user.Surname}",
-                City = "Istanbul",
-                Country = "Turkey",
-                Description = "Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1",
-                ZipCode = "34742"
-            };
-            paymentRequest.BillingAddress = billingAddress;
+
 
             var basketItems = new List<BasketItem>();
-            var firstBasketItem = new BasketItem
+
+            foreach (var basketModel in model.BasketList)
             {
-                Id = "BI101",
-                Name = "Binocular",
-                Category1 = "Collectibles",
-                Category2 = "Accessories",
-                ItemType = BasketItemType.VIRTUAL.ToString(),
-                Price = model.Price.ToString(new CultureInfo("en-US"))
-            };
-            basketItems.Add(firstBasketItem);
+                basketItems.Add(_mapper.Map<BasketItem>(basketModel));
+            }
             paymentRequest.BasketItems = basketItems;
+
 
             return paymentRequest;
         }
@@ -111,7 +82,7 @@ namespace EvoComputerTechService.Services
             {
                 Locale = Locale.TR.ToString(),
                 ConversationId = conversationId,
-                BinNumber = binNumber,
+                BinNumber = binNumber.Substring(0,6),
                 Price = price.ToString(new CultureInfo("en-US")),
             };
 
@@ -136,6 +107,8 @@ namespace EvoComputerTechService.Services
         {
             var request = this.InitialPaymentRequest(model);
             var payment = Payment.Create(request, _options);
+
+            //paymenti paymentresponsemodele çevir
             return _mapper.Map<PaymentResponseModel>(payment);
         }
     }
