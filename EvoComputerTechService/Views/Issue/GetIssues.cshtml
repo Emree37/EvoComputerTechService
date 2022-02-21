@@ -30,11 +30,25 @@
                             @item.Description
                         </p>
                         <div class="pr_button">
-                            <button type="submit" name="add-to-cart" value="641" class="cart_btn">
-                                ÖDE
+
+                            @if (item.IssueState != IssueStates.Tamamlandi)
+                            {
+                            <button class="btn btn-danger">
+                                <a asp-controller="Issue" asp-action="DeleteIssue" asp-route-id="@item.Id">
+                                    SİL
+                                </a>
                             </button>
+                            }
+                            @if (item.IssueState == IssueStates.Tamamlandi)
+                            {
+                                <button class="btn btn-danger">
+                                    <a asp-controller="Payment" asp-action="Purchase" asp-route-id="@item.Id">
+                                        ÖDE
+                                    </a>
+                                </button>
+                            }
                             @*<a href="#"><i class="ti-heart"></i></a>
-                            <a href="#"><i class="ti-eye"></i></a>*@
+        <a href="#"><i class="ti-eye"></i></a>*@
                         </div>
                     </div>
                 </div>

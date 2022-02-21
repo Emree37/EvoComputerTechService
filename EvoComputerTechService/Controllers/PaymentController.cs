@@ -5,6 +5,7 @@ using EvoComputerTechService.Models.Identity;
 using EvoComputerTechService.Models.Payment;
 using EvoComputerTechService.Services;
 using EvoComputerTechService.ViewModels;
+using Iyzipay.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -84,40 +85,34 @@ namespace EvoComputerTechService.Controllers
             return Ok(result);
         }
 
-        //[Authorize]
-        //public IActionResult Purchase(Guid id)//satın alma işlemi için
-        //{
-        //    var data = _dbContext.SubscriptionTypes.Find(id);
-        //    if (data == null)
-        //    {
-        //        return RedirectToAction("Index", "Home");
-        //    }
+        [Authorize]
+        public IActionResult Purchase(Guid id)//satın alma işlemi için
+        {
+            var data = _dbContext.Issues.Find(id);
+            if(data == null)
+            {
+                //Doldur...
+                return RedirectToAction("");
+            }
 
-        //    var model = _mapper.Map<SubscriptionTypeViewModel>(data);
-        //    ViewBag.Subs = model;
+            //var model = _mapper.Map<SubscriptionTypeViewModel>(data);
+            ViewBag.Subs = data;
 
-        //    //kişinin adresi
-        //    var addresses = _dbContext.Addresses.Where(x => x.UserId == HttpContext.GetUserId())
-        //        .ToList()
-        //        .Select(x => _mapper.Map<AddressViewModel>(x))
-        //        .ToList();
+            //var model2 = new PaymentViewModel()
+            //{
+            //    BasketModel = new BasketModel()
+            //    {
+            //        Category1 = data.Name,
+            //        ItemType = BasketItemType.VIRTUAL.ToString(),
+            //        Id = data.Id.ToString(),
+            //        Name = data.Name,
+            //        Price = data.Price.ToString(new CultureInfo("en-us"))
+            //    }
+            //};
 
-        //    ViewBag.Addresses = addresses;
-
-        //    var model2 = new PaymentViewModel()
-        //    {
-        //        BasketModel = new BasketModel()
-        //        {
-        //            Category1 = data.Name,
-        //            ItemType = BasketItemType.VIRTUAL.ToString(),
-        //            Id = data.Id.ToString(),
-        //            Name = data.Name,
-        //            Price = data.Price.ToString(new CultureInfo("en-us"))
-        //        }
-        //    };
-
-        //    return View(model2);
-        //}
+            //return View(model2);
+            return View();
+        }
 
         //[HttpPost]
         //public async Task<IActionResult> Purchase(PaymentViewModel model)
