@@ -103,7 +103,7 @@
     <div class="container">
         <form asp-action="Purchase" method="post">
             <input asp-for="Installment" type="hidden" id="hdInstallment" value="1" />
-            @*<input type="hidden" id="Amount" name="Amount" value='@ViewBag.Subs.Price.ToString(new CultureInfo("en-US"))' />*@
+            <input type="hidden" id="Amount" name="Amount" value='@ViewBag.TotalPrice.ToString(new CultureInfo("en-US"))' />
             <input type="hidden" asp-for="BasketModel.Id" />
             <div class="row">
                 <div class="col-md-6">
@@ -188,8 +188,7 @@
                 console.log(bin);
                 var model = {
                     binNumber: bin,
-                    @*price: @ViewBag.Subs.Price.ToString(new CultureInfo("en-US"))*@
-                    price: 1000
+                    price: @ViewBag.TotalPrice.ToString(new CultureInfo("en-US"))
                 };
                 $.ajax({
                     url: '@Url.Action("CheckInstallment","Payment")',
