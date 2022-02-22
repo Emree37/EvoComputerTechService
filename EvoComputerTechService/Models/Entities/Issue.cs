@@ -42,6 +42,7 @@ namespace EvoComputerTechService.Models.Entities
         Beklemede,
         Atandi,
         Islemde,
-        Tamamlandi
+        Tamamlandi,
+        Odendi
     }
 }
