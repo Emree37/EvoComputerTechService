@@ -1,4 +1,10 @@
-﻿<!doctype html>
+﻿@using Microsoft.AspNetCore.Identity
+@using EvoComputerTechService.Models.Identity
+@using Microsoft.AspNetCore.Http
+@inject SignInManager<ApplicationUser> signInManager
+@inject UserManager<ApplicationUser> userManager
+
+<!doctype html>
 <html lang="en">
 
 <head>
@@ -44,10 +50,20 @@
                         <span>EVO </span>COMPUTER<br> TECH SERVİCE
                         <span>@DateTime.Now.ToString("yyyy")</span>
                     </h2>
-                    <a class="event_btn btn_hover wow fadeInLeft" data-wow-delay="0.9s" asp-controller="Account" asp-action="Register">KAYIT OL</a>
-                    <a class="event_btn event_btn_two btn_hover wow fadeInRight" data-wow-delay="0.9s" href="#">
-                        <i class="arrow_triangle-right_alt2"></i>How we Work
-                    </a>
+                    @if (signInManager.IsSignedIn(Context.User))
+                    {
+
+                    }
+                    else
+                    {
+                        <a class="event_btn btn_hover wow fadeInLeft" data-wow-delay="0.9s" asp-controller="Account" asp-action="Register">KAYIT OL</a>
+                        <a class="event_btn event_btn_two btn_hover wow fadeInRight" data-wow-delay="0.9s" href="#">
+                            <i class="arrow_triangle-right_alt2"></i>How we Work
+                        </a>
+
+                    }
+
+
                 </div>
             </div>
         </section>
