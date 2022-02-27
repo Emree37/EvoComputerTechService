@@ -1,6 +1,370 @@
 ﻿@model List<Issue>
 
-<section class="shop_list_area sec_pad">
+<section class="software_service_area sec_pad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-3">
+                <ul class="nav nav-tabs software_service_tab" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link" id="de-tab" data-toggle="tab" href="#de" role="tab" aria-controls="de"
+                           aria-selected="false">BEKLEMEDE</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="saas-tab" data-toggle="tab" href="#saas" role="tab"
+                           aria-controls="saas" aria-selected="false">KUYRUKTA</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active show" id="ma-tab" data-toggle="tab" href="#ma" role="tab"
+                           aria-controls="ma" aria-selected="true">İŞLEMDE</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="secure-tab" data-toggle="tab" href="#secure" role="tab"
+                           aria-controls="secure" aria-selected="false">TAMAMLANANLAR</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="scale-tab" data-toggle="tab" href="#scale" role="tab"
+                           aria-controls="scale" aria-selected="true">ÖDENENLER</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-9 col-md-9">
+                <div class="tab-content software_service_tab_content">
+                    <div class="tab-pane fade" id="de" role="tabpanel" aria-labelledby="de-tab">
+                        <div class="row">
+                            <section class="shop_list_area sec_pad">
+                                <div class="container">
+                                    @foreach (var item in Model)
+                                    {
+                                        @if (item.IssueState == IssueStates.Beklemede)
+                                        {
+                                            <div class="row shop_list_item">
+                                                <div class="col-md-5">
+                                                    <div class="shop_list_img">
+                                                        <img class="img-fluid" src="~/img/shop/shop-list/shop-list1.jpg" alt="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-7 single_product_item mt-0">
+                                                    <div class="single_pr_details text-left">
+                                                        <a class="s_list_title">
+                                                            <h3 class="f_p f_500 f_size_22">@item.IssueName</h3>
+                                                        </a>
+                                                        <div class="ratting">
+                                                            <a href="#">@item.IssueState</a>
+                                                        </div>
+                                                        <div class="price">
+                                                            <ins>
+                                                                <span class="woocommerce-Price-amount amount">
+                                                                    <span class="woocommerce-Price-currencySymbol"></span>@item.CreatedDate
+                                                                </span>
+                                                            </ins>
+                                                        </div>
+
+                                                        <p class="f_p f_400 f_size_15 mt_30 mb_50">
+                                                            @item.Description
+                                                        </p>
+                                                        <div class="pr_button">
+
+                                                            @if (item.IssueState != IssueStates.Tamamlandi)
+                                                            {
+                                                                <button class="btn btn-danger">
+                                                                    <a asp-controller="Issue" asp-action="DeleteIssue" asp-route-id="@item.Id">
+                                                                        SİL
+                                                                    </a>
+                                                                </button>
+                                                            }
+                                                            @if (item.IssueState == IssueStates.Tamamlandi)
+                                                            {
+                                                                <button class="btn btn-danger">
+                                                                    <a asp-controller="Payment" asp-action="Purchase" asp-route-id="@item.Id">
+                                                                        ÖDE
+                                                                    </a>
+                                                                </button>
+                                                            }
+                                                            @*<a href="#"><i class="ti-heart"></i></a>
+                                                                <a href="#"><i class="ti-eye"></i></a>*@
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                    }
+
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="saas" role="tabpanel" aria-labelledby="saas-tab">
+                        <div class="row">
+                            <section class="shop_list_area sec_pad">
+                                <div class="container">
+                                    @foreach (var item in Model)
+                                    {
+                                        @if (item.IssueState == IssueStates.Kuyrukta)
+                                        {
+                                            <div class="row shop_list_item">
+                                                <div class="col-md-5">
+                                                    <div class="shop_list_img">
+                                                        <img class="img-fluid" src="~/img/shop/shop-list/shop-list1.jpg" alt="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-7 single_product_item mt-0">
+                                                    <div class="single_pr_details text-left">
+                                                        <a class="s_list_title">
+                                                            <h3 class="f_p f_500 f_size_22">@item.IssueName</h3>
+                                                        </a>
+                                                        <div class="ratting">
+                                                            <a href="#">@item.IssueState</a>
+                                                        </div>
+                                                        <div class="price">
+                                                            <ins>
+                                                                <span class="woocommerce-Price-amount amount">
+                                                                    <span class="woocommerce-Price-currencySymbol"></span>@item.CreatedDate
+                                                                </span>
+                                                            </ins>
+                                                        </div>
+
+                                                        <p class="f_p f_400 f_size_15 mt_30 mb_50">
+                                                            @item.Description
+                                                        </p>
+                                                        <div class="pr_button">
+
+                                                            @if (item.IssueState != IssueStates.Tamamlandi)
+                                                            {
+                                                                <button class="btn btn-danger">
+                                                                    <a asp-controller="Issue" asp-action="DeleteIssue" asp-route-id="@item.Id">
+                                                                        SİL
+                                                                    </a>
+                                                                </button>
+                                                            }
+                                                            @if (item.IssueState == IssueStates.Tamamlandi)
+                                                            {
+                                                                <button class="btn btn-danger">
+                                                                    <a asp-controller="Payment" asp-action="Purchase" asp-route-id="@item.Id">
+                                                                        ÖDE
+                                                                    </a>
+                                                                </button>
+                                                            }
+                                                            @*<a href="#"><i class="ti-heart"></i></a>
+                                        <a href="#"><i class="ti-eye"></i></a>*@
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                    }
+
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade active show" id="ma" role="tabpanel" aria-labelledby="ma-tab">
+                        <div class="row">
+                            <section class="shop_list_area sec_pad">
+                                <div class="container">
+                                    @foreach (var item in Model)
+                                    {
+                                        @if (item.IssueState == IssueStates.Islemde)
+                                        {
+                                            <div class="row shop_list_item">
+                                                <div class="col-md-5">
+                                                    <div class="shop_list_img">
+                                                        <img class="img-fluid" src="~/img/shop/shop-list/shop-list1.jpg" alt="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-7 single_product_item mt-0">
+                                                    <div class="single_pr_details text-left">
+                                                        <a class="s_list_title">
+                                                            <h3 class="f_p f_500 f_size_22">@item.IssueName</h3>
+                                                        </a>
+                                                        <div class="ratting">
+                                                            <a href="#">@item.IssueState</a>
+                                                        </div>
+                                                        <div class="price">
+                                                            <ins>
+                                                                <span class="woocommerce-Price-amount amount">
+                                                                    <span class="woocommerce-Price-currencySymbol"></span>@item.CreatedDate
+                                                                </span>
+                                                            </ins>
+                                                        </div>
+
+                                                        <p class="f_p f_400 f_size_15 mt_30 mb_50">
+                                                            @item.Description
+                                                        </p>
+                                                        <div class="pr_button">
+
+                                                            @if (item.IssueState != IssueStates.Tamamlandi)
+                                                            {
+                                                                <button class="btn btn-danger">
+                                                                    <a asp-controller="Issue" asp-action="DeleteIssue" asp-route-id="@item.Id">
+                                                                        SİL
+                                                                    </a>
+                                                                </button>
+                                                            }
+                                                            @if (item.IssueState == IssueStates.Tamamlandi)
+                                                            {
+                                                                <button class="btn btn-danger">
+                                                                    <a asp-controller="Payment" asp-action="Purchase" asp-route-id="@item.Id">
+                                                                        ÖDE
+                                                                    </a>
+                                                                </button>
+                                                            }
+                                                            @*<a href="#"><i class="ti-heart"></i></a>
+                                        <a href="#"><i class="ti-eye"></i></a>*@
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                    }
+
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="secure" role="tabpanel" aria-labelledby="secure-tab">
+                        <div class="row">
+                            <section class="shop_list_area sec_pad">
+                                <div class="container">
+                                    @foreach (var item in Model)
+                                    {
+                                        @if (item.IssueState == IssueStates.Tamamlandi)
+                                        {
+                                            <div class="row shop_list_item">
+                                                <div class="col-md-5">
+                                                    <div class="shop_list_img">
+                                                        <img class="img-fluid" src="~/img/shop/shop-list/shop-list1.jpg" alt="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-7 single_product_item mt-0">
+                                                    <div class="single_pr_details text-left">
+                                                        <a class="s_list_title">
+                                                            <h3 class="f_p f_500 f_size_22">@item.IssueName</h3>
+                                                        </a>
+                                                        <div class="ratting">
+                                                            <a href="#">@item.IssueState</a>
+                                                        </div>
+                                                        <div class="price">
+                                                            <ins>
+                                                                <span class="woocommerce-Price-amount amount">
+                                                                    <span class="woocommerce-Price-currencySymbol"></span>@item.CreatedDate
+                                                                </span>
+                                                            </ins>
+                                                        </div>
+
+                                                        <p class="f_p f_400 f_size_15 mt_30 mb_50">
+                                                            @item.Description
+                                                        </p>
+                                                        <div class="pr_button">
+
+                                                            @if (item.IssueState != IssueStates.Tamamlandi)
+                                                            {
+                                                                <button class="btn btn-danger">
+                                                                    <a asp-controller="Issue" asp-action="DeleteIssue" asp-route-id="@item.Id">
+                                                                        SİL
+                                                                    </a>
+                                                                </button>
+                                                            }
+                                                            @if (item.IssueState == IssueStates.Tamamlandi)
+                                                            {
+                                                                <button class="btn btn-danger">
+                                                                    <a asp-controller="Payment" asp-action="Purchase" asp-route-id="@item.Id">
+                                                                        ÖDE
+                                                                    </a>
+                                                                </button>
+                                                            }
+                                                            @*<a href="#"><i class="ti-heart"></i></a>
+                                        <a href="#"><i class="ti-eye"></i></a>*@
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                    }
+
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="scale" role="tabpanel" aria-labelledby="scale-tab">
+                        <div class="row">
+                            <section class="shop_list_area sec_pad">
+                                <div class="container">
+                                    @foreach (var item in Model)
+                                    {
+                                        @if (item.IssueState == IssueStates.Odendi)
+                                        {
+                                            <div class="row shop_list_item">
+                                                <div class="col-md-5">
+                                                    <div class="shop_list_img">
+                                                        <img class="img-fluid" src="~/img/shop/shop-list/shop-list1.jpg" alt="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-7 single_product_item mt-0">
+                                                    <div class="single_pr_details text-left">
+                                                        <a class="s_list_title">
+                                                            <h3 class="f_p f_500 f_size_22">@item.IssueName</h3>
+                                                        </a>
+                                                        <div class="ratting">
+                                                            <a href="#">@item.IssueState</a>
+                                                        </div>
+                                                        <div class="price">
+                                                            <ins>
+                                                                <span class="woocommerce-Price-amount amount">
+                                                                    <span class="woocommerce-Price-currencySymbol"></span>@item.CreatedDate
+                                                                </span>
+                                                            </ins>
+                                                        </div>
+
+                                                        <p class="f_p f_400 f_size_15 mt_30 mb_50">
+                                                            @item.Description
+                                                        </p>
+                                                        <div class="pr_button">
+
+                                                            @if (item.IssueState != IssueStates.Tamamlandi)
+                                                            {
+                                                                <button class="btn btn-danger">
+                                                                    <a asp-controller="Issue" asp-action="DeleteIssue" asp-route-id="@item.Id">
+                                                                        SİL
+                                                                    </a>
+                                                                </button>
+                                                            }
+                                                            @if (item.IssueState == IssueStates.Tamamlandi)
+                                                            {
+                                                                <button class="btn btn-danger">
+                                                                    <a asp-controller="Payment" asp-action="Purchase" asp-route-id="@item.Id">
+                                                                        ÖDE
+                                                                    </a>
+                                                                </button>
+                                                            }
+                                                            @*<a href="#"><i class="ti-heart"></i></a>
+                                        <a href="#"><i class="ti-eye"></i></a>*@
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                    }
+
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+@*<section class="shop_list_area sec_pad">
     <div class="container">
         @foreach (var item in Model)
         {
@@ -33,11 +397,11 @@
 
                             @if (item.IssueState != IssueStates.Tamamlandi)
                             {
-                            <button class="btn btn-danger">
-                                <a asp-controller="Issue" asp-action="DeleteIssue" asp-route-id="@item.Id">
-                                    SİL
-                                </a>
-                            </button>
+                                <button class="btn btn-danger">
+                                    <a asp-controller="Issue" asp-action="DeleteIssue" asp-route-id="@item.Id">
+                                        SİL
+                                    </a>
+                                </button>
                             }
                             @if (item.IssueState == IssueStates.Tamamlandi)
                             {
@@ -47,8 +411,6 @@
                                     </a>
                                 </button>
                             }
-                            @*<a href="#"><i class="ti-heart"></i></a>
-        <a href="#"><i class="ti-eye"></i></a>*@
                         </div>
                     </div>
                 </div>
@@ -56,4 +418,4 @@
         }
 
     </div>
-</section>
+</section>*@
