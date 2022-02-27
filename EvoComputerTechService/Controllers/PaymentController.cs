@@ -83,7 +83,6 @@ namespace EvoComputerTechService.Controllers
                     Message = "Bad req."
                 });
 
-            //Burada price 1000di...
             var result = _paymentService.CheckInstallments(binNumber, price);
             return Ok(result);
         }
@@ -215,7 +214,7 @@ namespace EvoComputerTechService.Controllers
                 _dbContext.SaveChanges();
             }
             
-            return View();
+            return RedirectToAction("GetIssues","Issue");
         }
     }
 }

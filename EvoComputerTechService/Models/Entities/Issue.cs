@@ -40,7 +40,7 @@ namespace EvoComputerTechService.Models.Entities
     public enum IssueStates
     {
         Beklemede,
-        Atandi,
+        Kuyrukta,
         Islemde,
         Tamamlandi,
         Odendi

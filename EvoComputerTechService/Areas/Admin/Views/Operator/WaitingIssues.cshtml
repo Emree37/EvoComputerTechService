@@ -17,7 +17,7 @@
                                 <img alt="image-product" src="~/admin-assets/assets/img/500x400.jpg" class="img-fluid">
                             </div>
                             <div class="col-xl-12 text-center">
-                                <a asp-controller="Issue" asp-action="UpdateIssue" asp-route-id="@item.Id">
+                                <a asp-area="Admin" asp-controller="Operator" asp-action="Issue" asp-route-id="@item.Id">
                                     <h4 class="card-title">@item.IssueName</h4>
                                 </a>
 
@@ -27,6 +27,13 @@
                                 <button class="btn btn-danger">
                                     <a asp-area="Admin" asp-controller="Operator" asp-action="AssignTechnician" asp-route-id="@item.Id">
                                         TEKNİSYEN ATA
+                                    </a>
+                                </button>
+                                <br />
+                                <br />
+                                <button class="btn btn-danger">
+                                    <a asp-controller="Issue" asp-action="DeleteIssue" asp-route-id="@item.Id">
+                                        SİL
                                     </a>
                                 </button>
                             </div>

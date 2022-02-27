@@ -33,7 +33,17 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
         {
             var user = await _userManager.FindByIdAsync(HttpContext.GetUserId());
 
-            var myIssues = _dbContext.Issues.Where(x => x.TechnicianId == user.Id && x.IssueState == IssueStates.Atandi).ToList();
+            var myIssues = _dbContext.Issues.Where(x => x.TechnicianId == user.Id && (x.IssueState == IssueStates.Kuyrukta || x.IssueState == IssueStates.Islemde)).OrderBy(x=>x.CreatedDate).ToList();
+
+            for (int i = 0; i < myIssues.Count; i++)
+            {
+                if(i == 0)
+                {
+                    myIssues[i].IssueState = IssueStates.Islemde;
+                }
+            }
+
+            _dbContext.SaveChanges();
 
             return View(myIssues);
         }
@@ -48,32 +58,13 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
             return View(completedIssues);
         }
 
-
-        public IActionResult AcceptIssue(Guid id)
-        {
-            var issue = _dbContext.Issues.Find(id);
-            issue.IssueState = IssueStates.Islemde;
-            _dbContext.SaveChanges();
-
-            return RedirectToAction("AcceptedIssues");
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> AcceptedIssues()
-        {
-            var user = await _userManager.FindByIdAsync(HttpContext.GetUserId());
-
-            var acceptedIssues = _dbContext.Issues.Where(x => x.TechnicianId == user.Id &&
-                x.IssueState == IssueStates.Islemde)
-                .ToList();
-
-            return View(acceptedIssues);
-        }
-
         [HttpGet]
         public IActionResult IssueDetail(Guid id)
         {
             TempData["IssueId"] = id;
+            var issue = _dbContext.Issues.Find(id);
+            ViewBag.IssueState = issue.IssueState;
+
 
             var products = _dbContext.Products.ToList();
 

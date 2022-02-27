@@ -21,11 +21,14 @@
                                 <p class="card-text">@item.Description</p>
                             </div>
                             <div class="col-xl-12 text-center mt-2 card-bottom-section">
-                                <button class="btn btn-success">
-                                    <a asp-area="Admin" asp-controller="Technician" asp-action="AcceptIssue" asp-route-id="@item.Id">
-                                        KABUL ET
-                                    </a>
-                                </button>
+                                @if (item.IssueState == IssueStates.Islemde)
+                                {
+                                    <button class="btn btn-success">
+                                        <a asp-area="Admin" asp-controller="Technician" asp-action="IssueDetail" asp-route-id="@item.Id">
+                                            İŞLEMLER
+                                        </a>
+                                    </button>
+                                }
                             </div>
                         </div>
                     </div>
