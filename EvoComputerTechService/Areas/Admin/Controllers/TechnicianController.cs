@@ -1,7 +1,9 @@
 ﻿using EvoComputerTechService.Data;
 using EvoComputerTechService.Extensions;
+using EvoComputerTechService.Models;
 using EvoComputerTechService.Models.Entities;
 using EvoComputerTechService.Models.Identity;
+using EvoComputerTechService.Services;
 using EvoComputerTechService.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,11 +19,13 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
     {
         private readonly MyContext _dbContext;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IEmailSender _emailSender;
 
-        public TechnicianController(MyContext dbContext, UserManager<ApplicationUser> userManager)
+        public TechnicianController(MyContext dbContext, UserManager<ApplicationUser> userManager, IEmailSender emailSender)
         {
             _dbContext = dbContext;
             _userManager = userManager;
+            _emailSender = emailSender;
         }
         public IActionResult Index()
         {
@@ -143,12 +147,26 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult CompleteIssue()
+        public async Task<IActionResult> CompleteIssue()
         {
             var issueid = TempData["IssueId"];
             var issue = _dbContext.Issues.Find(issueid);
             issue.IssueState = IssueStates.Tamamlandi;
             _dbContext.SaveChanges();
+
+            var user = _dbContext.Users.Find(issue.UserId);
+
+            //Kullanıcıya Mail Gönderme
+            var emailMessage = new EmailMessage()
+            {
+                //Contacts = new string[] { user.Email },
+                Contacts = new string[] { "vedataydinkayaa@gmail.com" },
+                Body = $"Arıza Kaydınıza Ait Ödeme.",
+                Subject = "Arıza Kaydı Ödemesi"
+            };
+
+            await _emailSender.SendAsync(emailMessage);
+
 
             return RedirectToAction("CompletedIssues");
 

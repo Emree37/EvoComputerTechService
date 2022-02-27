@@ -1,7 +1,9 @@
 ﻿using EvoComputerTechService.Data;
 using EvoComputerTechService.Extensions;
+using EvoComputerTechService.Models;
 using EvoComputerTechService.Models.Entities;
 using EvoComputerTechService.Models.Identity;
+using EvoComputerTechService.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -17,11 +19,13 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
     {
         private readonly MyContext _dbContext;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IEmailSender _emailSender;
 
-        public OperatorController(MyContext dbContext, UserManager<ApplicationUser> userManager)
+        public OperatorController(MyContext dbContext, UserManager<ApplicationUser> userManager, IEmailSender emailSender)
         {
             _dbContext = dbContext;
             _userManager = userManager;
+            _emailSender = emailSender;
         }
 
         public IActionResult Index()
@@ -95,7 +99,7 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult AssignTechnician(string[] Technician,Guid id)
+        public async Task<IActionResult> AssignTechnician(string[] Technician,Guid id)
         {
             var issue = _dbContext.Issues.Find(id);
             issue.TechnicianId = Technician[0];
@@ -114,6 +118,19 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
             }
 
             _dbContext.SaveChanges();
+
+            //Mail atılması lazım gerek....
+            var emailMessage = new EmailMessage()
+            {
+                //Contacts = new string[] { technician.Email },
+                Contacts = new string[] { "vedataydinkayaa@gmail.com" },
+                Body = $"Arıza Kaydı Atanmıştır.",
+                Subject = "Arıza Kaydı Ataması"
+            };
+
+            await _emailSender.SendAsync(emailMessage);
+
+
 
             return RedirectToAction("ActiveIssues");
         }
