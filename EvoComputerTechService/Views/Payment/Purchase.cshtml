@@ -1,0 +1,253 @@
+﻿@using System.Globalization
+@model PaymentViewModel
+
+@{ ViewBag.Title = "Ödeme Sayfası"; }
+
+<!--============= Shopping Cart ===============-->
+<section class="shopping_cart_area sec_pad bg_color">
+    <div class="container">
+        <div class="cart_title">
+            <div class="row">
+                <div class="col-md-6 col-4">
+                    <h6 class="f_p">PRODUCT</h6>
+                </div>
+                <div class="col-md-2 col-3">
+                    <h6 class="f_p">PRICE</h6>
+                </div>
+                <div class="col-md-2 col-3">
+                    <h6 class="f_p"> QUANTITY</h6>
+                </div>
+                <div class="col-md-2 col-2">
+                    <h6 class="f_p">TOTAL</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <form action="#" class="woocommerce-cart-form">
+            <div class="table-responsive">
+                <table class="row table cart_table mb-0">
+                    <tbody>
+                        @*@foreach (var item in Model)
+                            {*@
+                        <tr>
+                            <td class="product col-lg-6 col-md-5 col-sm-5 col-xs-5" data-title="PRODUCT">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <img src="~/img/shop/item1.jpg" alt="">
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="mb-0">Critical Cycles Harper Single</h5>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="col-lg-2 col-md-2 col-sm-2 col-xs-2" data-title="PRICE">
+                                <div class="total">160.00</div>
+                            </td>
+                            <td class="col-lg-2 col-md-2 col-sm-2 col-xs-2" data-title="QUANTITY">
+                                <div class="quantity">
+                                    <div class="product-qty">
+                                        <button class="ar_top" type="button">
+                                            <i class="ti-angle-up"></i>
+                                        </button>
+                                        <input type="number" name="qty" id="qty" value="1" title="Quantity:"
+                                               class="manual-adjust">
+                                        <button class="ar_down" type="button">
+                                            <i class="ti-angle-down"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </td>
+                            <td class="col-lg-2 col-md-3 col-sm-3 col-xs-3" data-title="TOTAL">
+                                <div class="del-item">
+                                    <a href="#" class="total">160</a>
+                                </div>
+                            </td>
+                        </tr>
+                        @*}*@
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="hr"></div>
+            <div class="row">
+                <div class="col-lg-8 col-md-6 actions">
+                </div>
+                <div class="col-lg-4 col-md-6 actions">
+                    <div class="cart_box">
+                        <table class="shop_table">
+                            <tbody>
+                                <tr class="cart-subtotal">
+                                    <th>Subtotal</th>
+                                    <td data-title="Subtotal"><span class="amount">$870</span></td>
+                                </tr>
+                                <tr class="order-total">
+                                    <th>Order totals</th>
+                                    <td data-title="Total" class="total">$870</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+<!--============= Shopping Cart ===============-->
+
+
+<!--====== Shoping Checkout Start  ======-->
+
+<section class="checkout_area bg_color sec_pad">
+    <div class="container">
+        <form asp-action="Purchase" method="post">
+            <input asp-for="Installment" type="hidden" id="hdInstallment" value="1" />
+            <input type="hidden" id="Amount" name="Amount" value='@ViewBag.TotalPrice.ToString(new CultureInfo("en-US"))' />
+            <input type="hidden" asp-for="BasketModel.Id" />
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="checkout_content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label asp-for="CardModel.CardHolderName"></label>
+                                    <input asp-for="CardModel.CardHolderName" />
+                                    <span asp-validation-for="CardModel.CardHolderName" class="text-danger"></span>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label asp-for="CardModel.CardNumber"></label>
+                                    <input asp-for="CardModel.CardNumber" id="txtCardNumber" />
+                                    <span asp-validation-for="CardModel.CardNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label asp-for="CardModel.ExpireMonth"></label>
+                                    <input asp-for="CardModel.ExpireMonth" />
+                                    <span asp-validation-for="CardModel.ExpireMonth" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label asp-for="CardModel.ExpireYear"></label>
+                                    <input asp-for="CardModel.ExpireYear" />
+                                    <span asp-validation-for="CardModel.ExpireYear" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label asp-for="CardModel.Cvc"></label>
+                                    <input asp-for="CardModel.Cvc" />
+                                    <span asp-validation-for="CardModel.Cvc" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="cart_total_box">
+                        <h3 class="checkout_title f_p f_600 f_size_20 mb_20">
+                            ÖDEME SEÇENEKLERİ
+                        </h3>
+                        <div id="order_review" class="woocommerce-checkout-review-order">
+                            <table class="shop_table woocommerce-checkout-review-order-table">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Taksit Sayısı</th>
+                                        <th>Ödenecek Tutar</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-installment">
+                                </tbody>
+                            </table>
+                            <button type="submit" class="button">Place Order</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</section>
+
+<!--====== Shoping Checkout End ======-->
+
+
+@section Scripts
+{
+    <script>
+        $("#txtCardNumber").blur(function () {
+            var bin = $(this).val();
+            if (bin.length >= 6 && bin.length <= 16) {
+                console.log(bin);
+                var model = {
+                    binNumber: bin,
+                    price: @ViewBag.TotalPrice.ToString(new CultureInfo("en-US"))
+                };
+                $.ajax({
+                    url: '@Url.Action("CheckInstallment","Payment")',
+                    type: "POST",
+                    data: model,
+                    dataType: "json",
+                    error: function (request, status, error) {
+                        //console.log(request);
+                    },
+                    success: function (response) {
+                        //console.log(response);
+                        fillInstallments(response.installmentPrices);
+                    }
+                });
+            }
+        });
+
+        function fillInstallments(installmentPrices) {
+            $("#table-installment").empty();
+            for (var i = 0; i < installmentPrices.length; i++) {
+                var data = installmentPrices[i];
+                var tr = document.createElement("tr");
+                var td1 = document.createElement("td");
+                var td2 = document.createElement("td");
+                var td3 = document.createElement("td");
+                var radio = document.createElement("input");
+                var label = document.createElement("label");
+
+                $(radio).attr("type", "radio").attr("name", "install-radio").attr("data", data.installmentNumber).attr("id", "rd" + i).appendTo(td1);
+                $(label).attr("for", "rd" + i).html(data.installmentNumber).appendTo(td1);
+
+                $(radio).on('change', function () {
+                    $("#hdInstallment").val($(this).attr("data"));
+                });
+
+
+                if (i == 0) {
+                    $(radio).prop('checked', true);
+                }
+
+
+                $(td2).html(data.price);
+                $(td3).html(data.totalPrice);
+
+                $(tr).append(td1).append(td2).append(td3).appendTo($("#table-installment"));
+            }
+        }
+
+    </script>
+}
+
+
+@section Styles
+{
+    <style>
+        input {
+            border: solid 1px #e3eeff;
+            height: 50px;
+            padding: 0 15px;
+        }
+    </style>
+}

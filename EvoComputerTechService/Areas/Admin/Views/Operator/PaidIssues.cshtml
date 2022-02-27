@@ -1,8 +1,9 @@
 ﻿@model List<Issue>
 
 @{
-    ViewBag.Title = "Atanan Arızalar";
+    ViewBag.Title = "Ödenen Arızalar";
 }
+
 <div class="col-md-12">
     <div class="row">
         @foreach (var item in Model)
@@ -13,22 +14,23 @@
                         <div class="row">
                             <div class="col-xl-12">
                                 <span class="badge badge-success">@item.IssueState</span>
+                                <br />
+                                <span class="badge badge-success">@item.Technician.UserName</span>
                                 <img alt="image-product" src="~/admin-assets/assets/img/500x400.jpg" class="img-fluid">
                             </div>
                             <div class="col-xl-12 text-center">
-                                <h4 class="card-title">@item.IssueName</h4>
+                                <a asp-area="Admin" asp-controller="Operator" asp-action="Issue" asp-route-id="@item.Id">
+                                    <h4 class="card-title">@item.IssueName</h4>
+                                </a>
 
                                 <p class="card-text">@item.Description</p>
                             </div>
                             <div class="col-xl-12 text-center mt-2 card-bottom-section">
-                                @if (item.IssueState == IssueStates.Islemde)
-                                {
-                                    <button class="btn btn-success">
-                                        <a asp-area="Admin" asp-controller="Technician" asp-action="IssueDetail" asp-route-id="@item.Id">
-                                            İŞLEMLER
+                                @*<button class="btn btn-danger">
+                                        <a asp-controller="Issue" asp-action="DeleteIssue" asp-route-id="@item.Id">
+                                            SİL
                                         </a>
-                                    </button>
-                                }
+                                    </button>*@
                             </div>
                         </div>
                     </div>

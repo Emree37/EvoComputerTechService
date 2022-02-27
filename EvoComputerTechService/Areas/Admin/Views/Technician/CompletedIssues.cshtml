@@ -1,8 +1,9 @@
 ﻿@model List<Issue>
 
 @{
-    ViewBag.Title = "Atanan Arızalar";
+    ViewBag.Title = "Tamamlanan Arızalar";
 }
+
 <div class="col-md-12">
     <div class="row">
         @foreach (var item in Model)
@@ -21,14 +22,11 @@
                                 <p class="card-text">@item.Description</p>
                             </div>
                             <div class="col-xl-12 text-center mt-2 card-bottom-section">
-                                @if (item.IssueState == IssueStates.Islemde)
-                                {
-                                    <button class="btn btn-success">
-                                        <a asp-area="Admin" asp-controller="Technician" asp-action="IssueDetail" asp-route-id="@item.Id">
-                                            İŞLEMLER
-                                        </a>
-                                    </button>
-                                }
+                                <button class="btn btn-success">
+                                    <a asp-area="Admin" asp-controller="Technician" asp-action="IssueDetail" asp-route-id="@item.Id">
+                                        DETAY
+                                    </a>
+                                </button>
                             </div>
                         </div>
                     </div>

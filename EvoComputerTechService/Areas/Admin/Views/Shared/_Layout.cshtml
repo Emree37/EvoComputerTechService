@@ -4,21 +4,24 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
-    <title>Blank Page | Equation - Multipurpose Bootstrap Dashboard Template </title>
+    <title>Admin Paneli </title>
     <link rel="icon" type="image/x-icon" href="~/admin-assets/assets/img/favicon.ico" />
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
     <link href="~/admin-assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="~/admin-assets/assets/css/plugins.css" rel="stylesheet" type="text/css" />
 
-    
+    <link href="~/admin-assets/assets/css/ecommerce/view_cart.css" rel="stylesheet" type="text/css">
 
+    <link href="~/admin-assets/assets/css/ecommerce/product-details-1.css" rel="stylesheet" type="text/css" />
 
     <!-- END GLOBAL MANDATORY STYLES -->
     <!--  BEGIN CUSTOM STYLE FILE  -->
     <link href="~/admin-assets/assets/css/ecommerce/product-catalog.css" rel="stylesheet" type="text/css" />
 
+    <link href="~/admin-assets/assets/css/ecommerce/product-details-1.css" rel="stylesheet" type="text/css" />
 
+    <link href="~/admin-assets/assets/css/analytics-dashboard/style.css" rel="stylesheet" type="text/css" />
 
     @await RenderSectionAsync("Styles", required: false)
     <!-- END GLOBAL MANDATORY STYLES -->
@@ -61,7 +64,7 @@
     </div>
     <!-- END MAIN CONTAINER -->
     <!--  BEGIN FOOTER  -->
-    <partial name="Partials/_footer" />
+    @*<partial name="Partials/_footer" />*@
 
     <!--  END FOOTER  -->
     <!--  BEGIN CONTROL SIDEBAR  -->
@@ -74,9 +77,7 @@
     <script src="~/admin-assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="~/admin-assets/plugins/scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="~/admin-assets/assets/js/app.js"></script>
-
-
-
+    <script src="~/admin-assets/plugins/blockui/jquery.blockUI.min.js"></script>
 
 
     <script>
@@ -85,8 +86,25 @@
         });
     </script>
 
+    <script>
+        $(function () { $('[data-toggle="tooltip"]').tooltip() })
+    </script>
 
     <script src="~/admin-assets/assets/js/custom.js"></script>
+
+    <script src="~/admin-assets/assets/js/ecommerce/custom-ecommerce_pro_detail1.js"></script>
+
+    <script src="~/admin-assets/plugins/charts/amcharts/amcharts.js"></script>
+    <script src="~/admin-assets/plugins/maps/vector/ammaps/ammap.js"></script>
+    <script src="~/admin-assets/plugins/maps/vector/ammaps/worldLow.js"></script>
+    <script src="~/admin-assets/plugins/charts/amcharts/serial.js"></script>
+    <script src="~/admin-assets/plugins/charts/amcharts/pie.js"></script>
+    <script src="~/admin-assets/plugins/charts/amcharts/gauge.js"></script>
+
+    <script src="~/admin-assets/plugins/calendar/pignose/moment.latest.min.js"></script>
+    <script src="~/admin-assets/plugins/calendar/pignose/pignose.calendar.js"></script>
+    <script src="~/admin-assets/assets/js/element/weather-app/skycons.js"></script>
+    <script src="~/admin-assets/assets/js/analytics-dashboard/analytics-custom.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 

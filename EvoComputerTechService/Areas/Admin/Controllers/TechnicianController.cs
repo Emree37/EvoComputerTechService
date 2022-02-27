@@ -2,8 +2,10 @@
 using EvoComputerTechService.Extensions;
 using EvoComputerTechService.Models.Entities;
 using EvoComputerTechService.Models.Identity;
+using EvoComputerTechService.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,41 +33,125 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
         {
             var user = await _userManager.FindByIdAsync(HttpContext.GetUserId());
 
-            var myIssues = _dbContext.Issues.Where(x => x.TechnicianId == user.Id && x.IssueState == IssueStates.Atandi).ToList();
+            var myIssues = _dbContext.Issues.Where(x => x.TechnicianId == user.Id && (x.IssueState == IssueStates.Kuyrukta || x.IssueState == IssueStates.Islemde)).OrderBy(x=>x.CreatedDate).ToList();
+
+            for (int i = 0; i < myIssues.Count; i++)
+            {
+                if(i == 0)
+                {
+                    myIssues[i].IssueState = IssueStates.Islemde;
+                }
+            }
+
+            _dbContext.SaveChanges();
 
             return View(myIssues);
         }
 
-        
-        public IActionResult AcceptIssue(Guid id)
-        {
-            var issue = _dbContext.Issues.Find(id);
-            issue.IssueState = IssueStates.Islemde;
-            _dbContext.SaveChanges();
-
-            return RedirectToAction("AcceptedIssues");
-        }
-
         [HttpGet]
-        public async Task<IActionResult> AcceptedIssues()
+        public async Task<IActionResult> CompletedIssues()
         {
             var user = await _userManager.FindByIdAsync(HttpContext.GetUserId());
 
-            var acceptedIssues = _dbContext.Issues.Where(x => x.TechnicianId == user.Id &&
-                x.IssueState == IssueStates.Islemde)
-                .ToList();
+            var completedIssues = _dbContext.Issues.Where(x => x.TechnicianId == user.Id && x.IssueState == IssueStates.Tamamlandi).ToList();
 
-            return View(acceptedIssues);
+            return View(completedIssues);
         }
 
         [HttpGet]
         public IActionResult IssueDetail(Guid id)
         {
+            TempData["IssueId"] = id;
             var issue = _dbContext.Issues.Find(id);
+            ViewBag.IssueState = issue.IssueState;
+
 
             var products = _dbContext.Products.ToList();
 
-            return View(products);
+            var productsInIssue = _dbContext.IssueProducts
+                .Include(x=>x.Product)
+                .Where(x => x.IssueId == id)
+                .ToList();
+
+            IssueDetailViewModel model = new IssueDetailViewModel()
+            {
+                IssueProducts = productsInIssue,
+                Products = products
+            };
+
+
+            return View(model);
+        }
+
+        
+        public IActionResult AddProduct(Guid id)
+        {
+            var issueid = TempData["IssueId"];
+            var issue = _dbContext.Issues.Find(issueid);
+            var product = _dbContext.Products.Find(id);
+
+            var productsInIssue = _dbContext.IssueProducts
+                .Include(x => x.Product)
+                .Where(x => x.IssueId == issue.Id)
+                .ToList();
+
+
+            var control = productsInIssue.SingleOrDefault(x=>x.ProductId == product.Id);
+            if(control == null)
+            {
+                //Ürün yok
+                IssueProducts newProduct = new IssueProducts()
+                {
+                    IssueId = issue.Id,
+                    ProductId = product.Id,
+                    Quantity = 1,
+                    Price = product.Price
+                };
+                _dbContext.IssueProducts.Add(newProduct);
+            }
+            else
+            {
+                control.Quantity++;
+                control.Price = control.Quantity * product.Price;
+            }
+
+            _dbContext.SaveChanges();
+
+            return RedirectToAction("IssueDetail", new { id=issueid });
+        }
+
+        [HttpGet]
+        public IActionResult DeleteProduct(Guid id)
+        {
+            var issueid = TempData["IssueId"];
+            var issue = _dbContext.Issues.Find(issueid);
+            var control = _dbContext.IssueProducts
+                .SingleOrDefault(x => x.ProductId == id && x.IssueId == issue.Id);
+
+            if(control == null)
+            {
+                return RedirectToAction("IssueDetail", new { id = issueid });
+            }
+            else
+            {
+                _dbContext.IssueProducts.Remove(control);
+                _dbContext.SaveChanges();
+            }
+
+            return RedirectToAction("IssueDetail", new { id = issueid });
+
+        }
+
+        [HttpGet]
+        public IActionResult CompleteIssue()
+        {
+            var issueid = TempData["IssueId"];
+            var issue = _dbContext.Issues.Find(issueid);
+            issue.IssueState = IssueStates.Tamamlandi;
+            _dbContext.SaveChanges();
+
+            return RedirectToAction("CompletedIssues");
+
         }
     }
 }

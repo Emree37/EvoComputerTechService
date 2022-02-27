@@ -29,47 +29,20 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav menu w_menu m-auto">
-                    <li class="nav-item dropdown submenu">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="Index">
                             ANASAYFA
                         </a>
-                        <ul class="dropdown-menu">
-                            <li class="nav-item">
-                                <a href="blog-grid.html" class="nav-link">Blog Grid DFSD</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="blog-grid-two.html" class="nav-link">Blog Grid Two</a>
-                            </li>
-                        </ul>
                     </li>
-                    <li class="nav-item dropdown submenu">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="About">
                             HAKKIMIZDA
                         </a>
-                        <ul class="dropdown-menu">
-                            <li class="nav-item">
-                                <a href="blog-grid.html" class="nav-link">Blog Grid DFSD</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="blog-grid-two.html" class="nav-link">Blog Grid Two</a>
-                            </li>
-                        </ul>
                     </li>
-                    <li class="nav-item dropdown submenu">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="Services">
                             HİZMETLERİMİZ
                         </a>
-                        <ul class="dropdown-menu">
-                            <li class="nav-item">
-                                <a href="blog-grid.html" class="nav-link">Blog Grid DFSD</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="blog-grid-two.html" class="nav-link">Blog Grid Two</a>
-                            </li>
-                        </ul>
                     </li>
                     <li class="nav-item dropdown submenu">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
@@ -85,51 +58,29 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item dropdown submenu">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="Contact">
                             İLETİŞİM
                         </a>
-                        <ul class="dropdown-menu">
-                            <li class="nav-item">
-                                <a href="blog-grid.html" class="nav-link">Blog Grid DFSD</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="blog-grid-two.html" class="nav-link">Blog Grid Two</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown submenu">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
-                            GALERİ
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="nav-item">
-                                <a href="blog-grid.html" class="nav-link">Blog Grid DFSD</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="blog-grid-two.html" class="nav-link">Blog Grid Two</a>
-                            </li>
-                        </ul>
                     </li>
                     @if (signInManager.IsSignedIn(Context.User))
                     {
-        <li class="nav-item dropdown submenu">
-            <a asp-controller="Issue" asp-action="GetIssues" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown"
-               aria-haspopup="true" aria-expanded="false">
-                PROFİL
-            </a>
-            <ul class="dropdown-menu">
-                <li class="nav-item">
-                    <a asp-controller="Issue" asp-action="GetIssues" class="nav-link">KAYITLARIM</a>
-                </li>
-                <li class="nav-item">
-                    <a href="blog-grid-two.html" class="nav-link">Blog Grid Two</a>
-                </li>
-            </ul>
-        </li>
-}
+
+                        <li class="nav-item dropdown submenu">
+                            <a asp-controller="Issue" asp-action="GetIssues" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
+                                <span class="glyphicon glyphicon-user"></span>PROFİL
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item">
+                                    <a asp-controller="Issue" asp-action="GetIssues" class="nav-link">TALEPLERİM</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-controller="Account" asp-action="Profile" class="nav-link">BİLGİLERİM</a>
+                                </li>
+                            </ul>
+                        </li>
+                    }
                 </ul>
 
                 @if (signInManager.IsSignedIn(Context.User))

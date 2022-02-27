@@ -40,25 +40,34 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult ActiveIssues()
         {
-            var activeIssues = _dbContext.Issues.Where(x => x.IssueState == IssueStates.Islemde).ToList();
+            var activeIssues = _dbContext.Issues.Include(x => x.Technician).Where(x => x.IssueState == IssueStates.Islemde || x.IssueState == IssueStates.Kuyrukta).ToList();
 
             return View(activeIssues);
         }
 
-        [HttpGet]
-        public IActionResult AssignedIssues()
-        {
-            var assignedIssues = _dbContext.Issues.Where(x => x.IssueState == IssueStates.Atandi).ToList();
-
-            return View(assignedIssues);
-        }
 
         [HttpGet]
         public IActionResult CompletedIssues()
         {
-            var completedIssues = _dbContext.Issues.Where(x => x.IssueState == IssueStates.Tamamlandi).ToList();
+            var completedIssues = _dbContext.Issues.Include(x => x.Technician).Where(x => x.IssueState == IssueStates.Tamamlandi).ToList();
 
             return View(completedIssues);
+        }
+
+        [HttpGet]
+        public IActionResult PaidIssues()
+        {
+            var paidIssues = _dbContext.Issues.Include(x => x.Technician).Where(x => x.IssueState == IssueStates.Odendi).ToList();
+
+            return View(paidIssues);
+        }
+
+        [HttpGet]
+        public IActionResult Issue(Guid id)
+        {
+            var issue = _dbContext.Issues.Find(id);
+
+            return View(issue);
         }
 
         [HttpGet]
@@ -90,11 +99,23 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
         {
             var issue = _dbContext.Issues.Find(id);
             issue.TechnicianId = Technician[0];
-            issue.IssueState = IssueStates.Atandi;
+
+            //Atama işlemi
+            var technician = _dbContext.Users.Find(Technician[0]);
+            var issues = _dbContext.Issues.Where(x => x.TechnicianId == technician.Id && (x.IssueState == IssueStates.Kuyrukta || x.IssueState == IssueStates.Islemde));
+
+            if(issues.Count() > 0)
+            {
+                issue.IssueState = IssueStates.Kuyrukta;
+            }
+            else
+            {
+                issue.IssueState = IssueStates.Islemde;
+            }
 
             _dbContext.SaveChanges();
 
-            return RedirectToAction("AssignedIssues");
+            return RedirectToAction("ActiveIssues");
         }
 
 

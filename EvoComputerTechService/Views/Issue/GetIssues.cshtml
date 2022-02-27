@@ -1,37 +1,59 @@
 ﻿@model List<Issue>
 
-<section class="blog_area sec_pad">
+<section class="shop_list_area sec_pad">
     <div class="container">
-        <div class="row" id="blog_masonry">
-            @foreach (var item in Model)
-            {
-                <div class="col-lg-4 col-sm-6">
-                    <div class="blog_grid_item mb-30">
-                        @*<div class="blog_img">
-                            <img src="~/img/blog-grid/masonry_02.jpg" alt="">
-                        </div>*@
-                        <div class="blog_content">
-                            <div class="entry_post_info">
-                                <a href="#">@item.IssueState</a>
-                                <a href="#">@item.CreatedDate</a>
-                            </div>
-                            <a asp-controller="Issue" asp-action="UpdateIssue" asp-route-id="@item.Id">
-                                <h5 class="f_p f_size_20 f_500 t_color mb_20">@item.IssueName</h5>
-                            </a>
-                            <p class="f_400 mb-0">
-                                @item.Description
-                            </p>
-                            <br />
-                            <div>
-                                <button class="btn btn-danger"><a asp-controller="Issue" asp-action="DeleteIssue" asp-route-id="@item.Id">SİL
-                                </a></button>
-                            </div>
+        @foreach (var item in Model)
+        {
+            <div class="row shop_list_item">
+                <div class="col-md-5">
+                    <div class="shop_list_img">
+                        <img class="img-fluid" src="~/img/shop/shop-list/shop-list1.jpg" alt="">
+                    </div>
+                </div>
+                <div class="col-md-7 single_product_item mt-0">
+                    <div class="single_pr_details text-left">
+                        <a class="s_list_title">
+                            <h3 class="f_p f_500 f_size_22">@item.IssueName</h3>
+                        </a>
+                        <div class="ratting">
+                            <a href="#">@item.IssueState</a>
+                        </div>
+                        <div class="price">
+                            <ins>
+                                <span class="woocommerce-Price-amount amount">
+                                    <span class="woocommerce-Price-currencySymbol"></span>@item.CreatedDate
+                                </span>
+                            </ins>
+                        </div>
+
+                        <p class="f_p f_400 f_size_15 mt_30 mb_50">
+                            @item.Description
+                        </p>
+                        <div class="pr_button">
+
+                            @if (item.IssueState != IssueStates.Tamamlandi)
+                            {
+                            <button class="btn btn-danger">
+                                <a asp-controller="Issue" asp-action="DeleteIssue" asp-route-id="@item.Id">
+                                    SİL
+                                </a>
+                            </button>
+                            }
+                            @if (item.IssueState == IssueStates.Tamamlandi)
+                            {
+                                <button class="btn btn-danger">
+                                    <a asp-controller="Payment" asp-action="Purchase" asp-route-id="@item.Id">
+                                        ÖDE
+                                    </a>
+                                </button>
+                            }
+                            @*<a href="#"><i class="ti-heart"></i></a>
+        <a href="#"><i class="ti-eye"></i></a>*@
                         </div>
                     </div>
                 </div>
-            }
-        </div>
+            </div>
+        }
+
     </div>
 </section>
-
-

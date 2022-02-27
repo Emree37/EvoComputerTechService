@@ -1,4 +1,10 @@
-﻿<!doctype html>
+﻿@using Microsoft.AspNetCore.Identity
+@using EvoComputerTechService.Models.Identity
+@using Microsoft.AspNetCore.Http
+@inject SignInManager<ApplicationUser> signInManager
+@inject UserManager<ApplicationUser> userManager
+
+<!doctype html>
 <html lang="en">
 
 <head>
@@ -20,6 +26,7 @@
     <link rel="stylesheet" href="~/vendors/magnify-pop/magnific-popup.css">
     <link rel="stylesheet" href="~/vendors/elagent/style.css">
     <link rel="stylesheet" href="~/vendors/scroll/jquery.mCustomScrollbar.min.css">
+    <link rel="stylesheet" href="~/vendors/nice-select/nice-select.css">
     <link rel="stylesheet" href="~/css/style.css">
     <link rel="stylesheet" href="~/css/responsive.css">
 
@@ -43,10 +50,20 @@
                         <span>EVO </span>COMPUTER<br> TECH SERVİCE
                         <span>@DateTime.Now.ToString("yyyy")</span>
                     </h2>
-                    <a class="event_btn btn_hover wow fadeInLeft" data-wow-delay="0.9s" asp-controller="Account" asp-action="Register">KAYIT OL</a>
-                    <a class="event_btn event_btn_two btn_hover wow fadeInRight" data-wow-delay="0.9s" href="#">
-                        <i class="arrow_triangle-right_alt2"></i>How we Work
-                    </a>
+                    @if (signInManager.IsSignedIn(Context.User))
+                    {
+
+                    }
+                    else
+                    {
+                        <a class="event_btn btn_hover wow fadeInLeft" data-wow-delay="0.9s" asp-controller="Account" asp-action="Register">KAYIT OL</a>
+                        <a class="event_btn event_btn_two btn_hover wow fadeInRight" data-wow-delay="0.9s" href="#">
+                            <i class="arrow_triangle-right_alt2"></i>How we Work
+                        </a>
+
+                    }
+
+
                 </div>
             </div>
         </section>
@@ -73,6 +90,7 @@
     <script src="~/vendors/counterup/jquery.waypoints.min.js"></script>
     <script src="~/vendors/counterup/appear.js"></script>
     <script src="~/vendors/circle-progress/circle-progress.js"></script>
+    <script src="~/vendors/nice-select/jquery.nice-select.min.js"></script>
     <script src="~/vendors/stellar/jquery.stellar.js"></script>
     <script src="~/vendors/scroll/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="~/js/plugins.js"></script>
@@ -83,6 +101,8 @@
     <script src="~/vendors/red-countdown/red-countdown-settings.js"></script>
     <script src="~/js/plugins.js"></script>
     <script src="~/js/main.js"></script>
+
+
 
     @await RenderSectionAsync("Scripts", required: false)
 

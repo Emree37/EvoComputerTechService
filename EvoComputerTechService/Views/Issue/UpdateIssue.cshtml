@@ -100,8 +100,17 @@
 }
 
 @section Scripts {
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA74z7LZzTqKlJPcwjA2XlzNEYhBInY9SA&callback=initMap&v=weekly"
-            async></script>
+    @inject IConfiguration configuration
+    @{
+        string key = configuration.GetSection("MapKey")["Key"];
+        string src = "https://maps.googleapis.com/maps/api/js?key=" + key + "&callback=initMap&v=weekly";
+    }
+
+    <script src=@src async>
+
+    </script>
+
+
     <script>
         var map = null;
         var marker = null;
