@@ -36,7 +36,7 @@
             </div>
             <div class="col-lg-8 offset-lg-1">
                 <div class="contact_form">
-                    <form asp-controller="Issue" asp-action="UpdateIssue" class="contact_form_box" method="post" id="contactForm"
+                    <form asp-controller="Issue" asp-action="UpdateIssue" enctype="multipart/form-data" class="contact_form_box" method="post"  id="contactForm"
                           novalidate="novalidate">
                         <input type="hidden" id="lat" name="lat" />
                         <input type="hidden" id="lng" name="lng" />
