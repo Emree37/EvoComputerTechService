@@ -20,6 +20,8 @@ namespace EvoComputerTechService.Models.Entities
 
         public string AddressDetail { get; set; }
 
+        public string IssuePicture { get; set; }
+
         public IssueStates IssueState { get; set; }
 
         [StringLength(450)]

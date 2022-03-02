@@ -40,12 +40,12 @@
                                             <div class="row shop_list_item">
                                                 <div class="col-md-5">
                                                     <div class="shop_list_img">
-                                                        <img class="img-fluid" src="~/img/shop/shop-list/shop-list1.jpg" alt="">
+                                                        <img class="img-fluid" src="@item.IssuePicture.ToString().Substring(7)" alt="">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-7 single_product_item mt-0">
                                                     <div class="single_pr_details text-left">
-                                                        <a class="s_list_title">
+                                                        <a class="s_list_title" asp-controller="Issue" asp-action="UpdateIssue" asp-route-id="@item.Id">
                                                             <h3 class="f_p f_500 f_size_22">@item.IssueName</h3>
                                                         </a>
                                                         <div class="ratting">
