@@ -33,7 +33,7 @@ namespace EvoComputerTechService.Controllers
         public async Task<IActionResult> GetIssues()
         {
             var user = await _userManager.FindByIdAsync(HttpContext.GetUserId());
-            var issues = _dbContext.Issues.Where(x=>x.UserId == user.Id).ToList();
+            var issues = _dbContext.Issues.Where(x=>x.UserId == user.Id && x.IsDeleted == false).ToList();
             return View(issues);
         }
 
@@ -157,7 +157,7 @@ namespace EvoComputerTechService.Controllers
 
             }
 
-            _dbContext.Remove(issue);
+            issue.IsDeleted = true;
             _dbContext.SaveChanges();
 
             return RedirectToAction("GetIssues");

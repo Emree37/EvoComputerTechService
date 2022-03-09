@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EvoComputerTechService.Models.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,5 +14,7 @@ namespace EvoComputerTechService.Models.Payment
         public string Category1 { get; set; }
         public string Category2 { get; set; }
         public string ItemType { get; set; }
+
+        public List<IssueProducts> IssueProducts { get; set; }
     }
 }

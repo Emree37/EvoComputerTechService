@@ -36,7 +36,7 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult WaitingIssues()
         {
-            var waitingIssues = _dbContext.Issues.Where(x=>x.IssueState == IssueStates.Beklemede).ToList();
+            var waitingIssues = _dbContext.Issues.Where(x=>x.IssueState == IssueStates.Beklemede && x.IsDeleted == false).ToList();
 
             return View(waitingIssues);
         }
@@ -45,15 +45,16 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
         public IActionResult ActiveIssues()
         {
             var activeIssues = _dbContext.Issues.Include(x => x.Technician).Where(x => x.IssueState == IssueStates.Islemde || x.IssueState == IssueStates.Kuyrukta).ToList();
+            var activeIssuess = activeIssues.Where(x => x.IsDeleted == false).ToList();
 
-            return View(activeIssues);
+            return View(activeIssuess);
         }
 
 
         [HttpGet]
         public IActionResult CompletedIssues()
         {
-            var completedIssues = _dbContext.Issues.Include(x => x.Technician).Where(x => x.IssueState == IssueStates.Tamamlandi).ToList();
+            var completedIssues = _dbContext.Issues.Include(x => x.Technician).Where(x => x.IssueState == IssueStates.Tamamlandi && x.IsDeleted == false).ToList();
 
             return View(completedIssues);
         }
@@ -61,7 +62,7 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult PaidIssues()
         {
-            var paidIssues = _dbContext.Issues.Include(x => x.Technician).Where(x => x.IssueState == IssueStates.Odendi).ToList();
+            var paidIssues = _dbContext.Issues.Include(x => x.Technician).Where(x => x.IssueState == IssueStates.Odendi && x.IsDeleted == false).ToList();
 
             return View(paidIssues);
         }
@@ -123,8 +124,8 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
             var emailMessage = new EmailMessage()
             {
                 //Contacts = new string[] { technician.Email },
-                Contacts = new string[] { "vedataydinkayaa@gmail.com" },
-                Body = $"Arıza Kaydı Atanmıştır.",
+                Contacts = new string[] { "manifestationoffate@gmail.com" },
+                Body = $"Merhaba {technician.Name} {technician.Surname}, <br/> {issue.IssueName} İsimli Arıza Kaydı Tarafınıza Atanmıştır.",
                 Subject = "Arıza Kaydı Ataması"
             };
 

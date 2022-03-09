@@ -122,7 +122,8 @@ namespace EvoComputerTechService.Controllers
                     ItemType = BasketItemType.VIRTUAL.ToString(),
                     Id = issue.Id.ToString(),
                     Name = issue.IssueName,
-                    Price = totalPrice.ToString(new CultureInfo("en-us"))
+                    Price = totalPrice.ToString(new CultureInfo("en-us")),
+                    IssueProducts = productsInIssue
                 }
             };
 
@@ -157,7 +158,8 @@ namespace EvoComputerTechService.Controllers
                 ItemType = BasketItemType.VIRTUAL.ToString(),
                 Id = issue.Id.ToString(),
                 Name = issue.IssueName,
-                Price = totalPrice.ToString(new CultureInfo("en-us"))
+                Price = totalPrice.ToString(new CultureInfo("en-us")),
+                IssueProducts = productsInIssue
             };
 
 
@@ -220,8 +222,8 @@ namespace EvoComputerTechService.Controllers
                 var emailMessage = new EmailMessage()
                 {
                     //Contacts = new string[] { user.Email },
-                    Contacts = new string[] { "vedataydinkayaa@gmail.com" },
-                    Body = $"Ödemeniz Başarılı Bir Şekilde Gerçekleşmiştir.",
+                    Contacts = new string[] { "manifestationoffate@gmail.com" },
+                    Body = $"Merhaba {user.Name} {user.Surname}, <br/> -{issue.IssueName}- İsimli Arıza Kaydınıza Ait Ödemeniz Başarılı Bir Şekilde Gerçekleşmiştir.",
                     Subject = "Başarılı Ödeme"
                 };
 
