@@ -1,0 +1,37 @@
+﻿@model List<Issue>
+
+@{
+    ViewBag.Title = "Tamamlanan Arızalar";
+}
+
+<div class="col-md-12">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-xl-3 col-lg-6 col-md-6 col-12 product-cat6">
+                <div class="card mb-5">
+                    <div class="wrapper">
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <span class="badge badge-success">@item.IssueState</span>
+                                <img alt="image-product" src="~/admin-assets/assets/img/500x400.jpg" class="img-fluid">
+                            </div>
+                            <div class="col-xl-12 text-center">
+                                <h4 class="card-title">@item.IssueName</h4>
+
+                                <p class="card-text">@item.Description</p>
+                            </div>
+                            <div class="col-xl-12 text-center mt-2 card-bottom-section">
+                                <button class="btn btn-success">
+                                    <a asp-area="Admin" asp-controller="Technician" asp-action="IssueDetail" asp-route-id="@item.Id">
+                                        DETAY
+                                    </a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

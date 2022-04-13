@@ -38,7 +38,13 @@ namespace EvoComputerTechService.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("IssueName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IssuePicture")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("IssueState")
@@ -109,6 +115,9 @@ namespace EvoComputerTechService.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<decimal>("Price")
                         .HasPrecision(8, 2)
                         .HasColumnType("decimal(8,2)");
@@ -117,6 +126,9 @@ namespace EvoComputerTechService.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProductName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProductPicture")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedDate")

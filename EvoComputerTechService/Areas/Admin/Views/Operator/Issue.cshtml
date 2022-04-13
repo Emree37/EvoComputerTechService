@@ -1,0 +1,122 @@
+﻿@model Issue
+
+<div class="main-container" id="container">
+    <div class="overlay"></div>
+    <div class="cs-overlay"></div>
+    <!--  BEGIN CONTENT PART  -->
+    <div id="content" class="main-content">
+        <div class="container">
+            <div class="statbox widget box box-shadow">
+                <div class="widget-content">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-12 layout-spacing">
+                            <div class="widget-content-area product-detail-1">
+                                <div class="row">
+                                    <div class="col-lg-6 text-center">
+                                        <div class="product-slider">
+                                            <a class="product-image">
+                                                <div class="preview-pic tab-content">
+                                                    <div class="tab-pane active" id="pic-1">
+                                                        <img src="~/admin-assets/assets/img/320x320.jpg" alt="img" class="img-fluid" />
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="product-detailing">
+                                            <h2 class="product-name mt-4">@Model.IssueName</h2>
+                                            <div class="product-rating mb-3">
+                                                <a href="#">@Model.IssueState - @Model.CreatedDate</a>
+                                            </div>
+                                            <div class="product-description mt-4 mb-5">
+                                                <p>@Model.Description</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-12 col-lg-12 col-md-12">
+                                    <div id="map"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--  END CONTENT PART  -->
+</div>
+
+@section Styles {
+    <style>
+        #map {
+            height: 450px;
+            width: 100%;
+        }
+    </style>
+}
+
+@section Scripts {
+    @inject IConfiguration configuration
+    @{
+        string key = configuration.GetSection("MapKey")["Key"];
+        string src = "https://maps.googleapis.com/maps/api/js?key=" + key + "&callback=initMap&v=weekly";
+    }
+
+    <script src=@src async>
+
+    </script>
+
+
+    <script>
+        var map = null;
+        var marker = null;
+        function addMarker(position) {
+            const marker = new google.maps.Marker({
+                position,
+                map,
+            });
+        }
+        function initMap() {
+            console.log("Harita Yüklendi.");
+            const myLatlng = { lat: @Model.Latitude, lng: @Model.Longitude };
+            console.log(@Model.Latitude);
+            console.log(@Model.Longitude);
+            map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 16,
+                center: myLatlng,
+                mapTypeId: "terrain"
+            });
+            marker = new google.maps.Marker({
+                position: myLatlng,
+                map: map,
+            });
+            map.addListener("click", (mapsMouseEvent) => {
+                console.log("Tıklandı");
+                console.log(mapsMouseEvent);
+                if (marker == null) {
+                    marker = new google.maps.Marker({
+                        position: mapsMouseEvent.latLng,
+                        map: map
+                    });
+                    marker.getTitle(JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2))
+                }
+                else {
+                    marker.setMap(null);
+                    marker = new google.maps.Marker({
+                        position: mapsMouseEvent.latLng,
+                        map: map,
+                    });
+                }
+                document.getElementById("lat").value = mapsMouseEvent.latLng.lat();
+                document.getElementById("lng").value = mapsMouseEvent.latLng.lng();
+                console.log("Enlem: " + mapsMouseEvent.latLng.lat());
+                console.log("Boylam: " + mapsMouseEvent.latLng.lng());
+                marker.getTitle(JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2))
+            });
+        }
+    </script>
+
+}

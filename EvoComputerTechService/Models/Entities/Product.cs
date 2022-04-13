@@ -15,6 +15,10 @@ namespace EvoComputerTechService.Models.Entities
 
         public decimal Price { get; set; }
 
+        public string ProductPicture { get; set; }
+
+        public bool IsDeleted { get; set; } = false;
+
         public virtual List<IssueProducts> IssueProducts { get; set; }
     }
 }

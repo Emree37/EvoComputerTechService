@@ -4,21 +4,27 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
-    <title>Blank Page | Equation - Multipurpose Bootstrap Dashboard Template </title>
+    <title>Admin Paneli </title>
     <link rel="icon" type="image/x-icon" href="~/admin-assets/assets/img/favicon.ico" />
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
     <link href="~/admin-assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="~/admin-assets/assets/css/plugins.css" rel="stylesheet" type="text/css" />
 
-    
+    <link href="~/admin-assets/assets/css/ecommerce/view_cart.css" rel="stylesheet" type="text/css">
 
+    <link href="~/admin-assets/assets/css/ecommerce/product-details-1.css" rel="stylesheet" type="text/css" />
 
     <!-- END GLOBAL MANDATORY STYLES -->
     <!--  BEGIN CUSTOM STYLE FILE  -->
     <link href="~/admin-assets/assets/css/ecommerce/product-catalog.css" rel="stylesheet" type="text/css" />
 
+    <link href="~/admin-assets/assets/css/ecommerce/product-details-1.css" rel="stylesheet" type="text/css" />
 
+    <link href="~/admin-assets/assets/css/analytics-dashboard/style.css" rel="stylesheet" type="text/css" />
+
+    <link rel="stylesheet" type="text/css" href="~/admin-assets/plugins/table/datatable/datatables.css">
+    <link rel="stylesheet" type="text/css" href="~/admin-assets/assets/css/ecommerce/product.css">
 
     @await RenderSectionAsync("Styles", required: false)
     <!-- END GLOBAL MANDATORY STYLES -->
@@ -61,7 +67,7 @@
     </div>
     <!-- END MAIN CONTAINER -->
     <!--  BEGIN FOOTER  -->
-    <partial name="Partials/_footer" />
+    @*<partial name="Partials/_footer" />*@
 
     <!--  END FOOTER  -->
     <!--  BEGIN CONTROL SIDEBAR  -->
@@ -74,9 +80,7 @@
     <script src="~/admin-assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="~/admin-assets/plugins/scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="~/admin-assets/assets/js/app.js"></script>
-
-
-
+    <script src="~/admin-assets/plugins/blockui/jquery.blockUI.min.js"></script>
 
 
     <script>
@@ -85,8 +89,84 @@
         });
     </script>
 
+    <script>
+        $(function () { $('[data-toggle="tooltip"]').tooltip() })
+    </script>
 
     <script src="~/admin-assets/assets/js/custom.js"></script>
+
+    <script src="~/admin-assets/plugins/table/datatable/datatables.js"></script>
+    <script>
+        $('#ecommerce-product-list').DataTable({
+            "lengthMenu": [5, 10, 20, 50, 100],
+            "language": {
+                "paginate": { "previous": "<i class='flaticon-arrow-left-1'></i>", "next": "<i class='flaticon-arrow-right'></i>" },
+                "info": "Showing page _PAGE_ of _PAGES_"
+            },
+            drawCallback: function (settings) { $('[data-toggle="tooltip"]').tooltip(); }
+        });
+    </script>
+
+    <script src="~/admin-assets/assets/js/ecommerce/custom-ecommerce_pro_detail1.js"></script>
+
+    <script src="~/admin-assets/plugins/charts/amcharts/amcharts.js"></script>
+    <script src="~/admin-assets/plugins/maps/vector/ammaps/ammap.js"></script>
+    <script src="~/admin-assets/plugins/maps/vector/ammaps/worldLow.js"></script>
+    <script src="~/admin-assets/plugins/charts/amcharts/serial.js"></script>
+    <script src="~/admin-assets/plugins/charts/amcharts/pie.js"></script>
+    <script src="~/admin-assets/plugins/charts/amcharts/gauge.js"></script>
+
+    <script src="~/admin-assets/plugins/calendar/pignose/moment.latest.min.js"></script>
+    <script src="~/admin-assets/plugins/calendar/pignose/pignose.calendar.js"></script>
+    <script src="~/admin-assets/assets/js/element/weather-app/skycons.js"></script>
+    <script src="~/admin-assets/assets/js/analytics-dashboard/analytics-custom.js"></script>
+
+    <script>
+        //function Edit(productId) {
+        //    $("#editProduct").modal("show");
+
+        //}
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('table .edit').on('click', function () {
+                var id = $(this).data("id");
+                console.log(id);
+                $.ajax({
+                    type: 'POST',
+                    /*url: 'Admin/FindProduct',*/
+                    url: '@Url.Action("FindProduct")',
+                    data: { "id": id },
+                    success: function (response) {
+                        console.log(response);
+                        $('#editProduct #Id').val(response.id);
+                        $('#editProduct #ProductName').val(response.productName);
+                        $('#editProduct #ProductDescription').val(response.productDescription);
+                        $('#editProduct #Price').val(response.price);
+                    }
+                });
+            });
+
+            $('table .delete').on('click', function () {
+                var id = $(this).data("id");
+                console.log(id);
+                $.ajax({
+                    type: 'POST',
+                    /*url: 'Admin/FindProduct',*/
+                    url: '@Url.Action("FindProduct")',
+                    data: { "id": id },
+                    success: function (response) {
+                        console.log(response);
+                        $('#deleteProduct #Id').val(response.id);
+                        $('#deleteProduct #ProductName').val(response.productName);
+                        $('#deleteProduct #ProductDescription').val(response.productDescription);
+                        $('#deleteProduct #Price').val(response.price);
+                    }
+                });
+            });
+        });
+    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 

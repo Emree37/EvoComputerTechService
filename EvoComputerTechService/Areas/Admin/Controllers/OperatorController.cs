@@ -1,7 +1,9 @@
 ﻿using EvoComputerTechService.Data;
 using EvoComputerTechService.Extensions;
+using EvoComputerTechService.Models;
 using EvoComputerTechService.Models.Entities;
 using EvoComputerTechService.Models.Identity;
+using EvoComputerTechService.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -17,11 +19,13 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
     {
         private readonly MyContext _dbContext;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IEmailSender _emailSender;
 
-        public OperatorController(MyContext dbContext, UserManager<ApplicationUser> userManager)
+        public OperatorController(MyContext dbContext, UserManager<ApplicationUser> userManager, IEmailSender emailSender)
         {
             _dbContext = dbContext;
             _userManager = userManager;
+            _emailSender = emailSender;
         }
 
         public IActionResult Index()
@@ -32,7 +36,7 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult WaitingIssues()
         {
-            var waitingIssues = _dbContext.Issues.Where(x=>x.IssueState == IssueStates.Beklemede).ToList();
+            var waitingIssues = _dbContext.Issues.Where(x=>x.IssueState == IssueStates.Beklemede && x.IsDeleted == false).ToList();
 
             return View(waitingIssues);
         }
@@ -40,25 +44,35 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult ActiveIssues()
         {
-            var activeIssues = _dbContext.Issues.Where(x => x.IssueState == IssueStates.Islemde).ToList();
+            var activeIssues = _dbContext.Issues.Include(x => x.Technician).Where(x => x.IssueState == IssueStates.Islemde || x.IssueState == IssueStates.Kuyrukta).ToList();
+            var activeIssuess = activeIssues.Where(x => x.IsDeleted == false).ToList();
 
-            return View(activeIssues);
+            return View(activeIssuess);
         }
 
-        [HttpGet]
-        public IActionResult AssignedIssues()
-        {
-            var assignedIssues = _dbContext.Issues.Where(x => x.IssueState == IssueStates.Atandi).ToList();
-
-            return View(assignedIssues);
-        }
 
         [HttpGet]
         public IActionResult CompletedIssues()
         {
-            var completedIssues = _dbContext.Issues.Where(x => x.IssueState == IssueStates.Tamamlandi).ToList();
+            var completedIssues = _dbContext.Issues.Include(x => x.Technician).Where(x => x.IssueState == IssueStates.Tamamlandi && x.IsDeleted == false).ToList();
 
             return View(completedIssues);
+        }
+
+        [HttpGet]
+        public IActionResult PaidIssues()
+        {
+            var paidIssues = _dbContext.Issues.Include(x => x.Technician).Where(x => x.IssueState == IssueStates.Odendi && x.IsDeleted == false).ToList();
+
+            return View(paidIssues);
+        }
+
+        [HttpGet]
+        public IActionResult Issue(Guid id)
+        {
+            var issue = _dbContext.Issues.Find(id);
+
+            return View(issue);
         }
 
         [HttpGet]
@@ -86,15 +100,40 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult AssignTechnician(string[] Technician,Guid id)
+        public async Task<IActionResult> AssignTechnician(string[] Technician,Guid id)
         {
             var issue = _dbContext.Issues.Find(id);
             issue.TechnicianId = Technician[0];
-            issue.IssueState = IssueStates.Atandi;
+
+            //Atama işlemi
+            var technician = _dbContext.Users.Find(Technician[0]);
+            var issues = _dbContext.Issues.Where(x => x.TechnicianId == technician.Id && (x.IssueState == IssueStates.Kuyrukta || x.IssueState == IssueStates.Islemde));
+
+            if(issues.Count() > 0)
+            {
+                issue.IssueState = IssueStates.Kuyrukta;
+            }
+            else
+            {
+                issue.IssueState = IssueStates.Islemde;
+            }
 
             _dbContext.SaveChanges();
 
-            return RedirectToAction("AssignedIssues");
+            //Mail atılması lazım gerek....
+            var emailMessage = new EmailMessage()
+            {
+                //Contacts = new string[] { technician.Email },
+                Contacts = new string[] { "manifestationoffate@gmail.com" },
+                Body = $"Merhaba {technician.Name} {technician.Surname}, <br/> {issue.IssueName} İsimli Arıza Kaydı Tarafınıza Atanmıştır.",
+                Subject = "Arıza Kaydı Ataması"
+            };
+
+            await _emailSender.SendAsync(emailMessage);
+
+
+
+            return RedirectToAction("ActiveIssues");
         }
 
 

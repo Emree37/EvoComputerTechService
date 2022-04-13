@@ -1,9 +1,13 @@
-﻿using EvoComputerTechService.Models.Identity;
+﻿using EvoComputerTechService.Data;
+using EvoComputerTechService.Models.Entities;
+using EvoComputerTechService.Models.Identity;
 using EvoComputerTechService.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,11 +17,13 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
     {
         private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly MyContext _dbContext;
 
-        public AdminController(RoleManager<ApplicationRole> roleManager, UserManager<ApplicationUser> userManager)
+        public AdminController(RoleManager<ApplicationRole> roleManager, UserManager<ApplicationUser> userManager, MyContext dbContext)
         {
             _roleManager = roleManager;
             _userManager = userManager;
+            _dbContext = dbContext;
         }
 
         public IActionResult Index()
@@ -29,6 +35,100 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
         {
             return View();
         }
+
+        public IActionResult Products()
+        {
+            return View();
+        }
+
+        public IActionResult GetProducts()
+        {
+            var products = _dbContext.Products.Where(x => x.IsDeleted == false).ToList();
+
+            return View(products);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddProduct(Product model,IFormFile file)
+        {
+            var product = new Product()
+            {
+                ProductName = model.ProductName,
+                ProductDescription = model.ProductDescription,
+                Price = model.Price
+            };
+
+            if (file != null)
+            {
+                string imageExtension = Path.GetExtension(file.FileName);
+
+                string imageName = Guid.NewGuid() + imageExtension;
+
+                //string path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/images/{imageName}");
+
+                string path = $"wwwroot/images/{imageName}";
+
+                using var stream = new FileStream(path, FileMode.Create);
+
+                await file.CopyToAsync(stream);
+
+                product.ProductPicture = path;
+            }
+
+            _dbContext.Products.Add(product);
+            _dbContext.SaveChanges();
+
+            return RedirectToAction("GetProducts");
+        }
+
+        
+        public IActionResult FindProduct(Guid id)
+        {
+            var product = _dbContext.Products.Find(id);
+            return Json(product);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateProduct(Product model,IFormFile file)
+        {
+            Product product = _dbContext.Products.Find(model.Id);
+            product.ProductName = model.ProductName;
+            product.ProductDescription = model.ProductDescription;
+            product.Price = model.Price;
+
+            if (file != null)
+            {
+                string imageExtension = Path.GetExtension(file.FileName);
+
+                string imageName = Guid.NewGuid() + imageExtension;
+
+                //string path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/images/{imageName}");
+
+                string path = $"wwwroot/images/{imageName}";
+
+                using var stream = new FileStream(path, FileMode.Create);
+
+                await file.CopyToAsync(stream);
+
+                product.ProductPicture = path;
+            }
+
+            _dbContext.SaveChanges();
+            
+            return RedirectToAction("GetProducts");
+        }
+
+        [HttpPost]
+        public IActionResult DeleteProduct(Guid id)
+        {
+            var product = _dbContext.Products.Find(id);
+            product.IsDeleted = true;
+
+            _dbContext.SaveChanges();
+
+            return RedirectToAction("GetProducts");
+        }
+
 
         public async Task<IActionResult> RoleAssign(string id)
         {
