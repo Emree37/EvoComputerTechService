@@ -95,6 +95,11 @@
                             <a asp-action="Products" asp-controller="Admin" asp-area="Admin"> Ürünler </a>
                         </li>
                     </ul>
+                    <ul class="collapse submenu list-unstyled" id="ecommerce2" data-parent="#accordionExample">
+                        <li>
+                            <a asp-action="GetProducts" asp-controller="Admin" asp-area="Admin"> Ürünler </a>
+                        </li>
+                    </ul>
                 </li>
             }
 
@@ -113,11 +118,6 @@
                     <ul class="collapse submenu list-unstyled" id="ecommerce" data-parent="#accordionExample">
                         <li>
                             <a asp-action="WaitingIssues" asp-controller="Operator" asp-area="Admin"> Beklemede Olanlar </a>
-                        </li>
-                    </ul>
-                    <ul class="collapse submenu list-unstyled" id="ecommerce" data-parent="#accordionExample">
-                        <li>
-                            <a asp-action="AssignedIssues" asp-controller="Operator" asp-area="Admin"> Atanan Talepler </a>
                         </li>
                     </ul>
                     <ul class="collapse submenu list-unstyled" id="ecommerce" data-parent="#accordionExample">

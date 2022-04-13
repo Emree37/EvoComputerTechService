@@ -39,7 +39,7 @@
             </div>
             <div class="col-lg-8 offset-lg-1">
                 <div class="contact_form">
-                    <form asp-controller="Issue" asp-action="CreateIssue" class="contact_form_box" method="post" id="contactForm"
+                    <form asp-controller="Issue" asp-action="CreateIssue" enctype="multipart/form-data" class="contact_form_box" method="post" id="contactForm"
                           novalidate="novalidate">
                         <input type="hidden" id="lat" name="lat" />
                         <input type="hidden" id="lng" name="lng" />
@@ -66,7 +66,28 @@
                                               placeholder="Enter Your Message . . ."></textarea>
                                 </div>
                             </div>
+                            @*Burada Resim Ekledim*@
+                            <div class="col-lg-12">
+                                <h2 class="text-center lead"> Resim Yükle</h2>
+                                <div class="form-group">
+                                    <label asp-for="IssuePicture">Resim Bilgileri</label>
+                                    <input asp-for="IssuePicture" type="file" name="file" class="form-control" />
+                                </div>
+                            </div>
                         </div>
+                        
+                        
+                        <section class="mapbox2">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div id="map"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <br />
+                        <br />
                         <button type="submit" class="btn_three">Arıza Kaydı Oluştur</button>
                     </form>
                     <div id="success">Your message succesfully sent!</div>
@@ -77,7 +98,7 @@
     </div>
 </section>
 
-<section class="mapbox2">
+@*<section class="mapbox2">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -85,7 +106,7 @@
             </div>
         </div>
     </div>
-</section>
+</section>*@
 
 @section Styles {
     <style>

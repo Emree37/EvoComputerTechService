@@ -36,7 +36,7 @@
             </div>
             <div class="col-lg-8 offset-lg-1">
                 <div class="contact_form">
-                    <form asp-controller="Issue" asp-action="UpdateIssue" class="contact_form_box" method="post" id="contactForm"
+                    <form asp-controller="Issue" asp-action="UpdateIssue" enctype="multipart/form-data" class="contact_form_box" method="post"  id="contactForm"
                           novalidate="novalidate">
                         <input type="hidden" id="lat" name="lat" />
                         <input type="hidden" id="lng" name="lng" />
@@ -63,6 +63,14 @@
                                               placeholder="Enter Your Message . . ."></textarea>
                                 </div>
                             </div>
+                            @*Burada Resim Ekledim*@
+                            <div class="col-lg-12">
+                                <h2 class="text-center lead"> Resim Yükle</h2>
+                                <div class="form-group">
+                                    <label asp-for="IssuePicture">Resim Bilgileri</label>
+                                    <input asp-for="IssuePicture" type="file" name="file" class="form-control" />
+                                </div>
+                            </div>
                         </div>
                         <button type="submit" class="btn_three">Arıza Kaydını Güncelle</button>
                     </form>
@@ -73,11 +81,6 @@
         </div>
     </div>
 </section>
-
-
-
-
-
 
 <section class="mapbox2">
     <div class="container">
@@ -110,7 +113,6 @@
 
     </script>
 
-
     <script>
         var map = null;
         var marker = null;
@@ -123,8 +125,6 @@
         function initMap() {
             console.log("Harita Yüklendi.");
             const myLatlng = { lat: @Model.Latitude, lng: @Model.Longitude };
-            console.log(@Model.Latitude);
-            console.log(@Model.Longitude);
             map = new google.maps.Map(document.getElementById("map"), {
                 zoom: 16,
                 center: myLatlng,
@@ -161,3 +161,8 @@
     </script>
 
 }
+
+
+
+
+

@@ -23,6 +23,9 @@
 
     <link href="~/admin-assets/assets/css/analytics-dashboard/style.css" rel="stylesheet" type="text/css" />
 
+    <link rel="stylesheet" type="text/css" href="~/admin-assets/plugins/table/datatable/datatables.css">
+    <link rel="stylesheet" type="text/css" href="~/admin-assets/assets/css/ecommerce/product.css">
+
     @await RenderSectionAsync("Styles", required: false)
     <!-- END GLOBAL MANDATORY STYLES -->
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
@@ -92,6 +95,18 @@
 
     <script src="~/admin-assets/assets/js/custom.js"></script>
 
+    <script src="~/admin-assets/plugins/table/datatable/datatables.js"></script>
+    <script>
+        $('#ecommerce-product-list').DataTable({
+            "lengthMenu": [5, 10, 20, 50, 100],
+            "language": {
+                "paginate": { "previous": "<i class='flaticon-arrow-left-1'></i>", "next": "<i class='flaticon-arrow-right'></i>" },
+                "info": "Showing page _PAGE_ of _PAGES_"
+            },
+            drawCallback: function (settings) { $('[data-toggle="tooltip"]').tooltip(); }
+        });
+    </script>
+
     <script src="~/admin-assets/assets/js/ecommerce/custom-ecommerce_pro_detail1.js"></script>
 
     <script src="~/admin-assets/plugins/charts/amcharts/amcharts.js"></script>
@@ -105,6 +120,53 @@
     <script src="~/admin-assets/plugins/calendar/pignose/pignose.calendar.js"></script>
     <script src="~/admin-assets/assets/js/element/weather-app/skycons.js"></script>
     <script src="~/admin-assets/assets/js/analytics-dashboard/analytics-custom.js"></script>
+
+    <script>
+        //function Edit(productId) {
+        //    $("#editProduct").modal("show");
+
+        //}
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('table .edit').on('click', function () {
+                var id = $(this).data("id");
+                console.log(id);
+                $.ajax({
+                    type: 'POST',
+                    /*url: 'Admin/FindProduct',*/
+                    url: '@Url.Action("FindProduct")',
+                    data: { "id": id },
+                    success: function (response) {
+                        console.log(response);
+                        $('#editProduct #Id').val(response.id);
+                        $('#editProduct #ProductName').val(response.productName);
+                        $('#editProduct #ProductDescription').val(response.productDescription);
+                        $('#editProduct #Price').val(response.price);
+                    }
+                });
+            });
+
+            $('table .delete').on('click', function () {
+                var id = $(this).data("id");
+                console.log(id);
+                $.ajax({
+                    type: 'POST',
+                    /*url: 'Admin/FindProduct',*/
+                    url: '@Url.Action("FindProduct")',
+                    data: { "id": id },
+                    success: function (response) {
+                        console.log(response);
+                        $('#deleteProduct #Id').val(response.id);
+                        $('#deleteProduct #ProductName').val(response.productName);
+                        $('#deleteProduct #ProductDescription').val(response.productDescription);
+                        $('#deleteProduct #Price').val(response.price);
+                    }
+                });
+            });
+        });
+    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 

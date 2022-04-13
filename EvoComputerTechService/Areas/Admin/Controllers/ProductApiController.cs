@@ -29,7 +29,7 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetProducts(DataSourceLoadOptions loadOptions)
         {
-            var data = _dbContext.Products;
+            var data = _dbContext.Products.Where(x=>x.IsDeleted == false);
 
             return Ok(DataSourceLoader.Load(data, loadOptions));
         }
@@ -68,7 +68,7 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
             JsonConvert.PopulateObject(values, data);
 
             if (!TryValidateModel(data))
-                return BadRequest(new JsonResponseViewModel()
+                return BadRequest(new JSonResponseViewModel()
                 {
                     IsSuccess = false,
                     ErrorMessage = ModelState.ToFullErrorString()
@@ -77,19 +77,32 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
 
             var result = _dbContext.SaveChanges();
             if (result == 0)
-                return BadRequest(new JsonResponseViewModel
+                return BadRequest(new JSonResponseViewModel
                 {
                     IsSuccess = false,
                     ErrorMessage = "Yeni Ürün Kaydedilemedi."
                 });
-            return Ok(new JsonResponseViewModel());
+            return Ok(new JSonResponseViewModel());
         }
 
-        //[HttpDelete]
-        //public IActionResult DeleteProduct(Guid key)
-        //{
-            //ADD IS DELETEDD......
+        [HttpDelete]
+        public IActionResult DeleteProduct(Guid key)
+        {
+            var product = _dbContext.Products.Find(key);
+            if(product == null)
+            {
+                return StatusCode(StatusCodes.Status409Conflict, "Ürün bulunamadı");
+            }
 
-        //}
+            product.IsDeleted = true;
+            var result = _dbContext.SaveChanges();
+            if(result == 0)
+            {
+                return BadRequest("Silme işlemi başarısız");
+            }
+
+            return Ok(new JSonResponseViewModel());
+
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EvoComputerTechService.Data;
 using EvoComputerTechService.Extensions;
+using EvoComputerTechService.Models;
 using EvoComputerTechService.Models.Entities;
 using EvoComputerTechService.Models.Identity;
 using EvoComputerTechService.Models.Payment;
@@ -26,14 +27,16 @@ namespace EvoComputerTechService.Controllers
         private readonly MyContext _dbContext;
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IEmailSender _emailSender;
         private decimal totalPrice;
 
-        public PaymentController(IPaymentService paymentService, MyContext dbContext, IMapper mapper, UserManager<ApplicationUser> userManager)
+        public PaymentController(IPaymentService paymentService, MyContext dbContext, IMapper mapper, UserManager<ApplicationUser> userManager, IEmailSender emailSender)
         {
             _paymentService = paymentService;
             _dbContext = dbContext;
             _mapper = mapper;
             _userManager = userManager;
+            _emailSender = emailSender;
             var cultureInfo = CultureInfo.GetCultureInfo("en-US");
             Thread.CurrentThread.CurrentCulture = cultureInfo;
             Thread.CurrentThread.CurrentUICulture = cultureInfo;
@@ -119,7 +122,8 @@ namespace EvoComputerTechService.Controllers
                     ItemType = BasketItemType.VIRTUAL.ToString(),
                     Id = issue.Id.ToString(),
                     Name = issue.IssueName,
-                    Price = totalPrice.ToString(new CultureInfo("en-us"))
+                    Price = totalPrice.ToString(new CultureInfo("en-us")),
+                    IssueProducts = productsInIssue
                 }
             };
 
@@ -154,7 +158,8 @@ namespace EvoComputerTechService.Controllers
                 ItemType = BasketItemType.VIRTUAL.ToString(),
                 Id = issue.Id.ToString(),
                 Name = issue.IssueName,
-                Price = totalPrice.ToString(new CultureInfo("en-us"))
+                Price = totalPrice.ToString(new CultureInfo("en-us")),
+                IssueProducts = productsInIssue
             };
 
 
@@ -212,6 +217,18 @@ namespace EvoComputerTechService.Controllers
             {
                 issue.IssueState = IssueStates.Odendi;
                 _dbContext.SaveChanges();
+
+                //MAİL AT ÖDENDİĞİNE DAİR...
+                var emailMessage = new EmailMessage()
+                {
+                    //Contacts = new string[] { user.Email },
+                    Contacts = new string[] { "manifestationoffate@gmail.com" },
+                    Body = $"Merhaba {user.Name} {user.Surname}, <br/> -{issue.IssueName}- İsimli Arıza Kaydınıza Ait Ödemeniz Başarılı Bir Şekilde Gerçekleşmiştir.",
+                    Subject = "Başarılı Ödeme"
+                };
+
+                await _emailSender.SendAsync(emailMessage);
+
             }
             
             return RedirectToAction("GetIssues","Issue");

@@ -1,0 +1,167 @@
+﻿@model List<Product>
+<!--  BEGIN MAIN CONTAINER  -->
+<div class="main-container" id="container">
+    <div class="overlay"></div>
+    <div class="cs-overlay"></div>
+    <!--  BEGIN CONTENT PART  -->
+    <div id="content" class="main-content">
+        <div class="container">
+            <div class="row margin-bottom-120">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="statbox widget box box-shadow">
+                        <div class="widget-header">
+                            <div class="row">
+                                <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                    <h4>Product List </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="widget-content widget-content-area">
+                            <div class="table-responsive mb-4">
+                                <table id="ecommerce-product-list" class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Image</th>
+                                            <th>Name</th>
+                                            <th>Description</th>
+                                            <th>Price</th>
+                                            <th class="align-center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td class="text-center">
+                                                    @if (item.ProductPicture == null)
+                                                    {
+                                                        <a class="product-list-img" href="javascript: void(0);"><img src=""></a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a class="product-list-img" href="javascript: void(0);"><img src="@item.ProductPicture.Substring(7)"></a>
+                                                    }
+                                                </td>
+                                                <td>@item.ProductName</td>
+                                                <td>@item.ProductDescription</td>
+                                                <td>@item.Price</td>
+                                                <td class="align-center">
+                                                    <ul class="table-controls">
+                                                        <li>
+                                                            <a href="#" data-toggle="modal" data-target="#editProduct" class="edit" data-id="@item.Id">
+                                                                <i class="flaticon-edit"></i>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#" data-toggle="modal" data-target="#deleteProduct" class="delete" data-id="@item.Id">
+                                                                <i class="flaticon-delete-5"></i>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--  END CONTENT PART  -->
+</div>
+<!-- END MAIN CONTAINER -->
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addProduct">Ürün Ekle</button>
+
+<div class="modal" id="addProduct">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">ÜRÜN EKLE</h2>
+            </div>
+            <form method="post" asp-action="AddProduct" asp-controller="Admin" asp-area="Admin" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <label>Ürün İsmi</label>
+                    <input type="text" class="form-control" name="ProductName" />
+                    <br />
+                    <label>Ürün Açıklaması</label>
+                    <input type="text" class="form-control" name="ProductDescription" />
+                    <br />
+                    <label>Ürün Fiyatı</label>
+                    <input type="text" class="form-control" name="Price" />
+                    <br />
+                    <label>Ürün Resmi</label>
+                    <input type="file" class="form-control" name="file" />
+                    <br />
+
+                    <button class="btn btn-info">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="editProduct">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">ÜRÜNÜ GÜNCELLE</h2>
+            </div>
+            <form method="post" asp-action="UpdateProduct" asp-controller="Admin" asp-area="Admin" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <input type="hidden" id="Id" name="Id"/>
+                    <label>Ürün İsmi</label>
+                    <input id="ProductName" type="text" class="form-control" name="ProductName" />
+                    <br />
+                    <label>Ürün Açıklaması</label>
+                    <input id="ProductDescription" type="text" class="form-control" name="ProductDescription" />
+                    <br />
+                    <label>Ürün Fiyatı</label>
+                    <input id="Price" type="text" class="form-control" name="Price" />
+                    <br />
+                    <label>Ürün Resmi</label>
+                    <input type="file" class="form-control" name="file" />
+                    <br />
+
+                    <button class="btn btn-info">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal" id="deleteProduct">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">ÜRÜNÜ GÜNCELLE</h2>
+            </div>
+            <form method="post" asp-action="DeleteProduct" asp-controller="Admin" asp-area="Admin" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <h3 style="color:red">Silmek İstiyon Mu La?</h3>
+                    <input type="hidden" id="Id" name="Id" />
+                    <label>Ürün İsmi</label>
+                    <input id="ProductName" type="text" class="form-control" name="ProductName" readonly/>
+                    <br />
+                    <label>Ürün Açıklaması</label>
+                    <input id="ProductDescription" type="text" class="form-control" name="ProductDescription" readonly/>
+                    <br />
+                    <label>Ürün Fiyatı</label>
+                    <input id="Price" type="text" class="form-control" name="Price" readonly/>
+                    <br />
+                    @*<label>Ürün Resmi</label>
+                    <input type="file" class="form-control" name="file" />
+                    <br />*@
+
+                    <button class="btn btn-info">Sil</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

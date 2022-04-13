@@ -1,7 +1,9 @@
 ﻿using EvoComputerTechService.Data;
 using EvoComputerTechService.Extensions;
+using EvoComputerTechService.Models;
 using EvoComputerTechService.Models.Entities;
 using EvoComputerTechService.Models.Identity;
+using EvoComputerTechService.Services;
 using EvoComputerTechService.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,11 +19,14 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
     {
         private readonly MyContext _dbContext;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IEmailSender _emailSender;
+        private decimal totalPrice;
 
-        public TechnicianController(MyContext dbContext, UserManager<ApplicationUser> userManager)
+        public TechnicianController(MyContext dbContext, UserManager<ApplicationUser> userManager, IEmailSender emailSender)
         {
             _dbContext = dbContext;
             _userManager = userManager;
+            _emailSender = emailSender;
         }
         public IActionResult Index()
         {
@@ -34,18 +39,19 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
             var user = await _userManager.FindByIdAsync(HttpContext.GetUserId());
 
             var myIssues = _dbContext.Issues.Where(x => x.TechnicianId == user.Id && (x.IssueState == IssueStates.Kuyrukta || x.IssueState == IssueStates.Islemde)).OrderBy(x=>x.CreatedDate).ToList();
+            var myIssuess = myIssues.Where(x => x.IsDeleted == false).ToList();
 
-            for (int i = 0; i < myIssues.Count; i++)
+            for (int i = 0; i < myIssuess.Count; i++)
             {
                 if(i == 0)
                 {
-                    myIssues[i].IssueState = IssueStates.Islemde;
+                    myIssuess[i].IssueState = IssueStates.Islemde;
                 }
             }
 
             _dbContext.SaveChanges();
 
-            return View(myIssues);
+            return View(myIssuess);
         }
 
         [HttpGet]
@@ -53,7 +59,7 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
         {
             var user = await _userManager.FindByIdAsync(HttpContext.GetUserId());
 
-            var completedIssues = _dbContext.Issues.Where(x => x.TechnicianId == user.Id && x.IssueState == IssueStates.Tamamlandi).ToList();
+            var completedIssues = _dbContext.Issues.Where(x => x.TechnicianId == user.Id && x.IssueState == IssueStates.Tamamlandi && x.IsDeleted == false).ToList();
 
             return View(completedIssues);
         }
@@ -66,12 +72,18 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
             ViewBag.IssueState = issue.IssueState;
 
 
-            var products = _dbContext.Products.ToList();
+            var products = _dbContext.Products.Where(x=>x.IsDeleted == false).ToList();
 
             var productsInIssue = _dbContext.IssueProducts
                 .Include(x=>x.Product)
                 .Where(x => x.IssueId == id)
                 .ToList();
+
+            foreach (var item in productsInIssue)
+            {
+                totalPrice += item.Price;
+            }
+            ViewBag.TotalPrice = totalPrice;
 
             IssueDetailViewModel model = new IssueDetailViewModel()
             {
@@ -143,12 +155,27 @@ namespace EvoComputerTechService.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult CompleteIssue()
+        public async Task<IActionResult> CompleteIssue()
         {
             var issueid = TempData["IssueId"];
             var issue = _dbContext.Issues.Find(issueid);
             issue.IssueState = IssueStates.Tamamlandi;
             _dbContext.SaveChanges();
+
+            var user = _dbContext.Users.Find(issue.UserId);
+
+            //Kullanıcıya Mail Gönderme
+            var emailMessage = new EmailMessage()
+            {
+                //Contacts = new string[] { user.Email },
+                Contacts = new string[] { "manifestationoffate@gmail.com" },
+               //Linki Düzenle...
+                Body = $"Merhaba {user.Name} {user.Surname},<br/>{issue.IssueName} İsimli Arıza Kaydınıza Dair İşlemler Tamamlanmıştır.Arıza Kaydınıza Ait Ödemeyi Gerçekleştirmek İçin Lütfen <a href='http://localhost:28442/Account'>Tıklayınız</a>",
+                Subject = "Arıza Kaydı Ödemesi"
+            };
+
+            await _emailSender.SendAsync(emailMessage);
+
 
             return RedirectToAction("CompletedIssues");
 

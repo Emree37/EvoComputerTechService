@@ -6,10 +6,12 @@ using EvoComputerTechService.Models.Identity;
 using EvoComputerTechService.Services;
 using EvoComputerTechService.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -31,7 +33,7 @@ namespace EvoComputerTechService.Controllers
         public async Task<IActionResult> GetIssues()
         {
             var user = await _userManager.FindByIdAsync(HttpContext.GetUserId());
-            var issues = _dbContext.Issues.Where(x=>x.UserId == user.Id).ToList();
+            var issues = _dbContext.Issues.Where(x=>x.UserId == user.Id && x.IsDeleted == false).ToList();
             return View(issues);
         }
 
@@ -43,7 +45,7 @@ namespace EvoComputerTechService.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> CreateIssue(string lat,string lng,Issue model)
+        public async Task<IActionResult> CreateIssue(string lat,string lng,Issue model,IFormFile file)
         {
             if (!ModelState.IsValid)
             {
@@ -69,6 +71,26 @@ namespace EvoComputerTechService.Controllers
                 Longitude = lng
             };
 
+            //Fotoğrafı eklemek
+            if (file != null)
+            {
+                string imageExtension = Path.GetExtension(file.FileName);
+
+                string imageName = Guid.NewGuid() + imageExtension;
+
+                //string path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/images/{imageName}");
+
+                string path = $"wwwroot/images/{imageName}";
+
+                using var stream = new FileStream(path, FileMode.Create);
+
+                await file.CopyToAsync(stream);
+
+                issue.IssuePicture = path;
+            }
+            
+            
+
             _dbContext.Issues.Add(issue);
             _dbContext.SaveChanges();
 
@@ -89,7 +111,7 @@ namespace EvoComputerTechService.Controllers
         }
 
         [HttpPost]
-        public IActionResult UpdateIssue(string lat, string lng, Issue model)
+        public async Task<IActionResult> UpdateIssue(string lat, string lng, Issue model,IFormFile file)
         {
             if (!ModelState.IsValid)
             {
@@ -104,6 +126,24 @@ namespace EvoComputerTechService.Controllers
             issue.Latitude = lat;
             issue.Longitude = lng;
 
+            //Fotoğrafı eklemek
+            if (file != null)
+            {
+                string imageExtension = Path.GetExtension(file.FileName);
+
+                string imageName = Guid.NewGuid() + imageExtension;
+
+                //string path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/images/{imageName}");
+
+                string path = $"wwwroot/images/{imageName}";
+
+                using var stream = new FileStream(path, FileMode.Create);
+
+                await file.CopyToAsync(stream);
+
+                issue.IssuePicture = path;
+            }
+
             _dbContext.SaveChanges();
             return RedirectToAction("GetIssues");
         }
@@ -117,7 +157,7 @@ namespace EvoComputerTechService.Controllers
 
             }
 
-            _dbContext.Remove(issue);
+            issue.IsDeleted = true;
             _dbContext.SaveChanges();
 
             return RedirectToAction("GetIssues");

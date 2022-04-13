@@ -65,7 +65,11 @@
                     </li>
                     @if (signInManager.IsSignedIn(Context.User))
                     {
-
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Issue" asp-action="CreateIssue">
+                                DESTEK TALEP
+                            </a>
+                        </li>
                         <li class="nav-item dropdown submenu">
                             <a asp-controller="Issue" asp-action="GetIssues" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown"
                                aria-haspopup="true" aria-expanded="false">
